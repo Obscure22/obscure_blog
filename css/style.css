@@ -52,13 +52,13 @@ body {
   left: 0px;
 }
 
-.logo::hover::before {
+.logo:hover::before {
   animation: glitch 0.3s linear 6;
   color: #e91e63;
   z-index: -2;
 }
 
-.logo::hover::after {
+.logo:hover::after {
   animation: glitch 0.3s linear 6 reverse;
   color: #2196f3;
   z-index: -1;
