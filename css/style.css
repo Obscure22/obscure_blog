@@ -96,6 +96,12 @@ body {
   max-width: 600px;
 }
 
+/* Report Section */
+.reports{
+  padding: 5rem 5%;
+  background: var(--darker-bg);
+}
+
 /* Footer */
 footer {
   background: var(--darker-bg);
