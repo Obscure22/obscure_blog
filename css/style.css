@@ -55,7 +55,7 @@ body {
   text-decoration: none;
   font-weight: 500;
   transition: all 0.3s ease;
-  position relatvie;
+  position: relative;
 }
 
 .nav-links a::after {
@@ -70,7 +70,7 @@ body {
 }
 
 .nav-links a:hover::after{
-  width 100%;
+  width: 100%;
 }
 
 /* Hero Section */
