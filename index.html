@@ -2,43 +2,56 @@
 <html lang="it">
 <head>
     <meta charset="UTF-8">
-    <title>Obscure_</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obscure RE and MA Dojo</title>
+    
+    <!-- link to fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-    <!-- CSS HEADER -->
-    <link rel="stylesheet" href="header.css">
-
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-        }
-
-        main {
-            padding: 40px;
-        }
-    </style>
+    <!-- link to css file -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <a href="#home" class="logo">Obscure_</a>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#skills">Skills</a></li>
+                <li><a href="#projects">Projects</a></li>
+            </ul>
+    </nav>
 
-    <!-- HEADER CARICATO -->
-    <div id="header"></div>
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-content">
+            <h1>Full-Stack Developer</h1>
+            <p>write something</p>
+            <p class="highlight">Specializing in ...</p>
+            <a href="#contact" class="cta-button">Let's Connect</a>
+        </div>
+        <div class="hero-image">
+            <img src="profile.jpg" alt="Profile" class="profile-img">    
+        </div>
+    </section>  
 
-    <main>
-        <h1>Benvenuto su Obscure_</h1>
-        <p>Sito in costruzione 🚧</p>
-    </main>
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2025 Obscure. All rights reserved.</p>
+        <div class="social-links">
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+            <a href="#"><i class="fab fa-github"></i></a>
+        </div>
+    </footer>
 
-    <!-- SCRIPT PER CARICARE HEADER -->
-    <script>
-        fetch("header.html")
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById("header").innerHTML = html;
-            });
-    </script>
-
+    <!-- link to javascript file -->
+    <script src="script.js"></script>
+    
 </body>
+
 </html>
+
 
 
 
