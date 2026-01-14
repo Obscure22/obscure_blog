@@ -44,7 +44,7 @@ body {
   padding-left: 2.5rem;
 }
 
-.logo::before, .logo::after {
+/*.logo::before, .logo::after {
   content: 'Obscure_';
   display: block;
   position: absolute;
@@ -90,10 +90,7 @@ body {
     top: 0;
     left: 0;
   }
-}
-
-
-  
+}*/
   
 .nav-links {
   display: flex;
