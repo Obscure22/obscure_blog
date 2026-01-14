@@ -26,7 +26,7 @@ body {
   top: 0;
   width: 100%;
   padding: 1.5rem 5%;
-  display: fles;
+  display: flex;
   justify-content: space-between;
   align-items: center;
   background: rgba(10, 10, 10, 0.95);
