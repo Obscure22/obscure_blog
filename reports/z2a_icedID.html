@@ -291,6 +291,38 @@
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
+                    Therefore, if the sample is able to successfully communicate with the C2 server or decrypt the required file, execution proceeds to <strong>sub_40109A</strong>. 
+                    Otherwise, the function returns 0, terminating further execution.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_32.png" alt="icedID_32" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Within <strong>sub_40109A</strong>, the function <span id="inline-code">CreateFileA</span> is invoked to create or open a file. The <span id="inline-code">dwDesiredAccess</span> parameter is 
+                    set to <span id="inline-code">0x40000000</span> (<strong>GENERIC_WRITE</strong>), granting write access, while <span id="inline-code">dwCreationDisposition</span> is set to 2 
+                    (<strong>CREATE_ALWAYS</strong>), ensuring that the file is created anew or overwritten if it already exists. The function then calls <span id="inline-code">WriteFile</span>, 
+                    using <span id="inline-code">lpBuffer</span> as input. This buffer corresponds to the first argument passed from the communication routine and most likely contains the retrieved PNG file data. 
+                    Based on this behavior, the subroutine can be renamed to <strong>write_png</strong>.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_33.png" alt="icedID_33" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The function then calls <strong>sub_4013EB</strong>, which in turn invokes <span id="inline-code">VirtualAlloc</span> to allocate <span id="inline-code">0x758</span> (<strong>1880</strong> in decimal) 
+                    bytes of memory. The allocated region is assigned <strong>PAGE_READWRITE</strong> (<span id="inline-code">0x4</span>) permissions, allowing both read and write operations. 
+                    A call to <span id="inline-code">GetModuleFileNameA</span> follows, with <span id="inline-code">hModule</span> set to NULL, indicating that the function retrieves the full path of the 
+                    executable file associated with the current process. The resulting path is stored in <span id="inline-code">lpFilename</span> for subsequent use. 
+                    Finally, the function calls <span id="inline-code">VirtualProtect</span> to modify the permissions of the memory region previously allocated by <span id="inline-code">VirtualAlloc</span>. 
+                    The <strong>flNewProtect</strong> parameter is set to <span id="inline-code">0x20</span> (<strong>PAGE_EXECUTE_READ</strong>), making the memory region both executable and readable.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_34.png" alt="icedID_34" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                </p>
+            <h2>Dynamic Analysis</h2>
+                <p>
+                    
                 </p>
         </section>
     </section>
