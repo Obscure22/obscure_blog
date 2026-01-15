@@ -208,6 +208,55 @@
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
+                    The function <strong>sub_401000</strong> is then invoked, taking as input the previously retrieved path (<span id="inline-code">pszPath</span>). This path likely corresponds to the location 
+                    where data obtained from the C2 server is stored. Within this function, several file-handling APIs are called, including <span id="inline-code">CreateFileA</span>, 
+                    <span id="inline-code">GetFileSize</span>, <span id="inline-code">HeapAlloc</span>, and <span id="inline-code">ReadFile</span>. This sequence strongly suggests that the function checks 
+                    whether the file <strong>photo.png</strong> already exists on disk. If the file is present, its contents are read into memory thus avoiding the need to download the payload again from the C2 server.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_23.png" alt="icedID_23" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The next function of interest is <strong>sub_40133E</strong>. Within this function, a DWORD located at <span id="inline-code">ESI + 0x57</span> is compared against 
+                    the value <span id="inline-code">0x54414449</span>, which corresponds to the ASCII string “TADI” when decoded (e.g., using CyberChef). Due to little-endian representation, 
+                    IDA displays the string in reverse order. If the comparison succeeds, the function executes a series of shift left and shift right instructions, followed by data movement operations. 
+                    It then allocates heap memory and performs an RC4 decryption routine. The presence of the RC4 decryption logic strongly suggests that the content stored in <strong>photo.png</strong> is RC4 encrypted. 
+                    Based on its functionality, this subroutine can be renamed to <strong>decrypt_png_file</strong>.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_24.png" alt="icedID_24" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Returning to the main function, execution reaches the call to <strong>sub_401224</strong>. Stepping into this subroutine there is a first invoked function, <strong>sub_4010F6</strong>. 
+                    Within <strong>sub_4010F6</strong>, several arithmetic and logical operations can be observed, including subtraction, AND, and XOR instructions.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_25.png" alt="icedID_25" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Switching to the pseudocode view provides a higher-level understanding of the function’s logic. The picture below shows the function invoking <span id="inline-code">rdtsc</span>, 
+                    which is used to read the processor’s time-stamp counter, followed by a call to <span id="inline-code">cpuid</span>, which immediately suggests the presence of anti-VM or anti-sandbox techniques. 
+                    CPUID is an instruction-level detection method commonly used to identify virtualized environments, and such techniques are particularly difficult to bypass or detect reliably.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_26.png" alt="icedID_26" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Finally, the function enters a while loop. Within this loop, <span id="inline-code">EAX</span> is set to 6 and <span id="inline-code">cpuid</span> is invoked again, 
+                    after which the value <span id="inline-code">v25 = EAX & 1</span> is computed. The function then sets <span id="inline-code">EAX</span> to <span id="inline-code">0x40000000</span> and calls 
+                    <span id="inline-code">cpuid</span> once more. After completing these operations, <span id="inline-code">wsprintfA</span> is called to format and store the collected data into a string using 
+                    the format specifier <span id="inline-code">%0.2X%0.2X …</span>. Notably, invoking <span id="inline-code">cpuid</span> with <span id="inline-code">EAX = **0x40000000</span> retrieves 
+                    the virtualization vendor string, which is returned across the <span id="inline-code">EAX</span>, <span id="inline-code">ECX</span>, and <span id="inline-code">EDX</span> registers. 
+                    This technique is commonly used to detect virtualized environments. For example:
+                    <ul>
+                        <li>Microsoft Hyper-V → <span id="inline-code">Microsoft Hv</span></li>
+                        <li>VMware → <span id="inline-code">VMwareVMware</span></li>
+                    </ul>
+                <br>
+                <img src="../img/z2a_icedID/z2a_icedID_27.png" alt="icedID_27" onclick="window.open(this.src, '_blank');"
+                        width="650", onmouseover="this.style.cursor='zoom-in'"
+                        onmouseout="this.style.cursor='default'">
+                <br><br>
                 </p>
         </section>
     </section>
