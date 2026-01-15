@@ -361,7 +361,7 @@
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
-                    After the `wsprintfA` call, the resulting string contains <span id="inline-code">0000000000FF</span>, which represents the increment measured via the RDTSC instruction. 
+                    After the <span id="inline-code">wsprintfA</span> call, the resulting string contains <span id="inline-code">0000000000FF</span>, which represents the increment measured via the RDTSC instruction. 
                     Following this, the string includes <span id="inline-code">40000006</span>, where the final value 6 appears to correspond to the VirtualBox identification obtained from the CPUID instruction.
                     <br>
                     <img src="../img/z2a_icedID/z2a_icedID_40.png" alt="icedID_40" onclick="window.open(this.src, '_blank');"
@@ -391,6 +391,12 @@
                     <span id="inline-code">WinHttpReceiveResponse</span> to wait for and process the server’s response.
                     <br>
                     <img src="../img/z2a_icedID/z2a_icedID_43.png" alt="icedID_43" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The routine then invokes <span id="inline-code">Sleep</span>, causing execution to pause for <span id="inline-code">0x1388</span> (<strong>5000</strong> ms) before continuing.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_44.png" alt="icedID_44" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
