@@ -206,7 +206,7 @@ footer {
   transform: translateY(-3px);
 }
 
-/* Container */
+/* Container report */
 .container {
   max-width: 740px;
   margin: 100px 60px auto;
@@ -240,6 +240,24 @@ footer {
     border-radius: 3px;
     font-size: 16px;
     font-family: "Courier New", monospace;
+}
+
+/* Logo before title */
+.post__author {
+  float: left;
+  flex-shrink: 0
+}
+
+.post__author-image {
+  position: relative;
+  display: inline-block;
+  width: 36px;
+  height: 36px;
+  padding: 3px;
+  margin-right: 8px;
+  border: 2px solid #3e8094;
+  border-radius: 50%;
+  overflow: hidden
 }
 
 @media (max-width: 768px) {
