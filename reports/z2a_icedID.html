@@ -85,6 +85,20 @@
                     to locate the unpacked executable code in memory. Breakpoints are set on <span id="inline-code">VirtualAlloc</span>, <span id="inline-code">VirtualProtect</span>, <span id="inline-code">CreateProcessInternalW</span> 
                     (or <span id="inline-code">CreateProcessW</span> on Windows 10 or <span id="inline-code">kernelbase. CreateProcessInternalW</span>), and <span id="inline-code">IsDebuggerPresent</span> 
                     to track memory allocation, changes in memory protections, process creation, and potential anti-debugging checks.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_6.png" alt="icedID_6" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    When the code is executed, execution breaks on the first <span id="inline-code">VirtualAlloc</span> call. The code is then executed until the function returns, 
+                    after which the value stored in <span id="inline-code">EAX</span> representing the allocated memory address. The image below shows the data stored in this memory 
+                    region that could be a shellcode.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_7.png" alt="icedID_7" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The next <span id="inline-code">VirtualAlloc</span> call is handled in the same way. This allocation appears to contain additional data, possibly an array or a structured block.
                 </p>
         </section>
     </section>
