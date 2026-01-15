@@ -233,19 +233,6 @@ footer {
     margin-bottom: 20px;
 }
 
-/*.container pre {
-    background-color: #f6f8fa;
-    padding: 20px;
-    border-radius: 6px;
-    overflow-x: auto;
-    margin: 25px 0;
-}
-
-.container code {
-    font-family: "Courier New", monospace;
-    font-size: 16px;
-}*/
-
 #inline-code {
     color: #ffffff;
     background-color: #424242;
@@ -253,6 +240,23 @@ footer {
     border-radius: 3px;
     font-size: 16px;
     font-family: "Courier New", monospace;
+}
+
+@media (max-width: 768px) {
+    .hero {
+      flex-direction: column;
+      text-align: center;
+      padding-top: 8rem;
+    }
+  
+    .nav-links {
+      display: none;
+    }
+  
+    .logo {
+      font-size: 1.5rem;
+      padding-left: 2rem;
+    }
 }
 
 
