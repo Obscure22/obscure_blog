@@ -233,7 +233,7 @@ footer {
     margin-bottom: 20px;
 }
 
-.container pre {
+/*.container pre {
     background-color: #f6f8fa;
     padding: 20px;
     border-radius: 6px;
@@ -244,6 +244,15 @@ footer {
 .container code {
     font-family: "Courier New", monospace;
     font-size: 16px;
+}*/
+
+#inline-code {
+    color: #ffffff;
+    background-color: #3e8094;
+    padding: 2px 8px 2px;
+    border-radius: 3px;
+    font-size: 10pt;
+    font-family: "Courier New", monospace;
 }
 
 
