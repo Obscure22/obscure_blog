@@ -248,10 +248,10 @@ footer {
 
 #inline-code {
     color: #ffffff;
-    background-color: #3e8094;
+    background-color: #f6f8fa;
     padding: 2px 8px 2px;
     border-radius: 3px;
-    font-size: 10pt;
+    font-size: 16px;
     font-family: "Courier New", monospace;
 }
 
