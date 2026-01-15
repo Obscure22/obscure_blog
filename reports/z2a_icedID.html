@@ -345,6 +345,29 @@
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
+                    At this point, the entire encryption routine can be executed. As observed in the memory dump at the end of the process, the initial 8 bytes remain unchanged, confirming that they 
+                    represent the encryption key, while the remaining data is modified. The decrypted output reveals an `index.php` string followed by null bytes (<span id="inline-code">0x00</span>) 
+                    and a list of C2 server URLs, clearly exposing the configuration data that was previously encrypted.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_38.png" alt="icedID_38" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The analysis proceeds to the communication routine, with the goal of understanding how the malware interacts with the C2 infrastructure. However, before reaching this stage, the execution 
+                    flow passes through an anti-VM function. The figure below shows that, after executing the CPUID instruction with <span id="inline-code">EAX = 0x40000000</span>, the returned value corresponds 
+                    to the string <span id="inline-code">VBoxVBoxVBox</span>, indicating that the sample is running inside a VirtualBox virtualized environment.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_39.png" alt="icedID_39" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    After the `wsprintfA` call, the resulting string contains <span id="inline-code">0000000000FF</span>, which represents the increment measured via the RDTSC instruction. 
+                    Following this, the string includes <span id="inline-code">40000006</span>, where the final value 6 appears to correspond to the VirtualBox identification obtained from the CPUID instruction.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_40.png" alt="icedID_40" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
                 </p>
         </section>
     </section>
