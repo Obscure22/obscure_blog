@@ -43,6 +43,13 @@
                 Questo report descrive l’analisi di un campione malware identificato come
                 <strong>XYZ</strong>. L’obiettivo è comprendere il comportamento, le tecniche
                 di persistenza e le capacità malevole. <span id="inline-code">VirtualAlloc</span>.
+                By answering question 12, we have identified the location of the list to be at 0x1066D08. Furthermore, we know that the list contains pointers to data, so we will have to follow the pointer of the first entry in the list to actually identify the memory address of the string. Do note, that each pointer contains an additional offset. So for the first entry, the data starts at 0xE4BF45, and we need to add the offset of 0x155 to it.
+                By answering question 12, we have identified the location of the list to be at 0x1066D08. Furthermore, we know that the list contains pointers to data, so we will have to follow the pointer of the first entry in the list to actually identify the memory address of the string. Do note, that each pointer contains an additional offset. So for the first entry, the data starts at 0xE4BF45, and we need to add the offset of 0x155 to it.
+                The final answer in this case is that the first service is located at: 0xE4C09A
+                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A
+                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A
+                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A
+                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A    
             </p>
         </section>
     </section>
