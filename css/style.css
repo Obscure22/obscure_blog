@@ -260,7 +260,7 @@ footer {
   height: 36px;
   padding: 3px;
   margin-right: 8px;
-  border: 2px solid var(--accent);
+  border-bottom: 2px solid var(--accent);
   /*border-radius: 50%;*/
   overflow: hidden
 }
