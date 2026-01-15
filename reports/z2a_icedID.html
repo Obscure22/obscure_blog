@@ -36,21 +36,36 @@
         </section>
         <section>
             <h2>Introduction</h2>
+            <p>
+                In this post, I will examine the sample provided in the <strong>Zero2Automated: Advanced Malware Analysis</strong> course, 
+                which is introduced when we reach the second chapter of the course, specifically the second stage. That said, let's get started.
+            </p>
         </section>
         <section>
-            <h2>Title</h2>
-            <p>
-                Questo report descrive l’analisi di un campione malware identificato come
-                <strong>XYZ</strong>. L’obiettivo è comprendere il comportamento, le tecniche
-                di persistenza e le capacità malevole. <span id="inline-code">VirtualAlloc</span>.
-                By answering question 12, we have identified the location of the list to be at 0x1066D08. Furthermore, we know that the list contains pointers to data, so we will have to follow the pointer of the first entry in the list to actually identify the memory address of the string. Do note, that each pointer contains an additional offset. So for the first entry, the data starts at 0xE4BF45, and we need to add the offset of 0x155 to it.
-                By answering question 12, we have identified the location of the list to be at 0x1066D08. Furthermore, we know that the list contains pointers to data, so we will have to follow the pointer of the first entry in the list to actually identify the memory address of the string. Do note, that each pointer contains an additional offset. So for the first entry, the data starts at 0xE4BF45, and we need to add the offset of 0x155 to it.
-                The final answer in this case is that the first service is located at: 0xE4C09A
-                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A
-                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A
-                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A
-                The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A The final answer in this case is that the first service is located at: 0xE4C09A    
-            </p>
+            <h2>Static Analysis</h2>
+            <h3>Packing Detection</h3>
+                <p>
+                    An initial analysis of the sample with <strong>PE Studio</strong> makes it possible to extract several interesting things. 
+                    One of the first aspects to notice is that the entropy value is relatively high, suggesting some level of data compression or obfuscation, 
+                    but not high enough to clearly indicate heavy packing or encryption.
+                    -- screen --
+                    In the <strong>debug</strong> section, a file path is present that serves as a strong indicator that the sample is likely packed. 
+                    The path appears to be meaningless and does not correspond to a valid location, suggesting that it is merely junk data.
+                    -- screen --
+                    In the <strong>library</strong> section, the sample loads only two libraries. This limited set of imported libraries is another indicator that the binary is likely packed.
+                    -- screen --
+                    In the <strong>strings</strong> section, there are strange strings and this is another indicator of packing.
+                    -- screen --
+                    Continuing with the <strong>strings</strong> section, several compiler-related strings are present. Their presence, combined with the other observations, serves as an additional indicator that the sample is packed.
+                    
+                    <span id="inline-code">VirtualAlloc</span>.  
+                </p>
+            <h3>Unpacking</h3>
+                <p>
+                    The sample is opened in <strong>xdbg</strong> to perform unpacking, with the goal of identifying the tail jump that transfers execution to the <strong>Original Entry Point (OEP)</strong> or, more generally, 
+                    to locate the unpacked executable code in memory. Breakpoints are set on <span id="inline-code">VirtualAlloc</span>, <span id="inline-code">VirtualProtect</span>, <span id="inline-code">CreateProcessInternalW</span> (or <span id="inline-code">CreateProcessW</span> on Windows 10 or <span id="inline-code">kernelbase.
+                    CreateProcessInternalW</span>), and <span id="inline-code">IsDebuggerPresent</span> to track memory allocation, changes in memory protections, process creation, and potential anti-debugging checks.
+                </p>
         </section>
     </section>
 
