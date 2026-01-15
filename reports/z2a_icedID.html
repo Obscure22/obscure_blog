@@ -159,6 +159,7 @@
                     This value is then returned by the function and placed in the <span id="inline-code">EAX</span> register for subsequent use by the program. Next, there is a conditional check based on the function’s 
                     return value. If the function succeeds, it returns 0. Therefore, if the Local AppData folder cannot be retrieved, execution follows the left branch; otherwise, if the folder exists, 
                     execution proceeds along the right branch.
+                    <br>
                     <img src="../img/z2a_icedID/z2a_icedID_16.png" alt="icedID_16" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
@@ -169,7 +170,20 @@
                     the name of the user associated with the current thread. The retrieved username is then used in a call to <span id="inline-code">CreateDirectoryA</span>, resulting in the creation of a 
                     directory named after the user. Subsequently, another <span id="inline-code">lstrcatA</span> call appends the string "<strong>\\photo.png</strong>" to the previously constructed path. 
                     As a result, a directory named after the user is created, and within it a file named <strong>photo.png</strong>, which may contain an encrypted or obfuscated payload.
+                    <br>
                     <img src="../img/z2a_icedID/z2a_icedID_17.png" alt="icedID_17" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Next, as shown in the figure above, the value of <strong>dword_403008</strong> is moved into the <span id="inline-code">EAX</span> register. 
+                    Subsequently, the offset of <strong>unk_403000</strong> is stored in <strong>var_24</strong>, which likely references additional encrypted or obfuscated data that is used later during execution.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_18.png" alt="icedID_18" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_19.png" alt="icedID_19" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
