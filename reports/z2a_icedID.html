@@ -181,9 +181,30 @@
                     <img src="../img/z2a_icedID/z2a_icedID_18.png" alt="icedID_18" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
-                    <br><br>
                     <br>
                     <img src="../img/z2a_icedID/z2a_icedID_19.png" alt="icedID_19" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Within the subroutine <strong>sub_40186E</strong>, the figure below shows the sample allocates heap memory for its own use. Execution then proceeds to the subroutine <strong>sub_40180F</strong>, 
+                    where further processing is performed on the allocated memory.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_20.png" alt="icedID_20" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    In the subroutine <strong>sub_40180F</strong>, the constant <span id="inline-code">0x100</span> (<strong>256</strong> in decimal) is immediately noticeable, along with the presence of two loops. 
+                    This strongly suggests the implementation of an RC4‑like algorithm. The first loop appears to initialize the <strong>substitution box</strong>, while the second loop performs the scrambling 
+                    (<strong>key‑scheduling</strong>) phase. After completing these operations, the function returns. Based on its behavior, this function can be renamed to <span id="inline-code">init_scramble_rc4</span>.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_21.png" alt="icedID_21" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Returning to the caller and scrolling further down, another relevant code segment becomes visible. Within this block, the presence of an XOR instruction can be observed. 
+                    This indicates that after initializing and scrambling the substitution box, the algorithm proceeds to use it to perform RC4 decryption on the data, applying the keystream through XOR operations.
+                    <br>
+                    <img src="../img/z2a_icedID/z2a_icedID_22.png" alt="icedID_22" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
