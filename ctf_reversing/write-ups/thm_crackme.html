@@ -47,14 +47,14 @@
                     This buffer appears to store obfuscated strings or configuration data that are later decrypted at runtime. Subsequently, a call to memset is performed, 
                     which overwrites 27 bytes of the allocated buffer with the character <strong>A</strong> (<span id="inline-code">0x41</span>).
                     <br>
-                    <img src="../../img/re_crackme/crackme1_1.png" alt="icedID_3" onclick="window.open(this.src, '_blank');"
+                    <img src="../../img/re_crackme/crackme1_1.png" alt="crackme1_1" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
                     Next, a loop iterates over the encrypted array 26 times (as indicated by the comparison <span id="inline-code">cmp eax, 1Ah</span>). During each iteration, the data is progressively 
                     processed to recover the original content. Once the loop completes, the resulting decrypted string is printed to standard output using the <span id="inline-code">puts</span> function.
                     <br>
-                    <img src="../../img/re_crackme/crackme1_2.png" alt="icedID_3" onclick="window.open(this.src, '_blank');"
+                    <img src="../../img/re_crackme/crackme1_2.png" alt="crackme1_2" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
@@ -62,15 +62,44 @@
                     <span id="inline-code">RAX</span> register at runtime and directly observe the decrypted string in cleartext. Alternatively, simply running the binary from 
                     the terminal is sufficient to display the decrypted string, as it is printed to standard output.
                     <br>
-                    <img src="../../img/re_crackme/crackme1_3.png" alt="icedID_3" onclick="window.open(this.src, '_blank');"
+                    <img src="../../img/re_crackme/crackme1_3.png" alt="crackme1_3" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
                 </p>
             <h2>Crackme2</h2>
                 <p>
-                    
+                    In this second scenario, as shown in the figure below, the program first performs a comparison between the value pointed to by <span id="inline-code">EAX</span> and 2. 
+                    This indicates that the program expects one command-line argument; if this condition is not met, it prints the message <span id="inline-code">Usage: %s password</span> and 
+                    terminates. This behavior confirms that the program requires a password as the second command-line parameter, although the correct value is not immediately known.
+                    <br>
+                    <img src="../../img/re_crackme/crackme2_1.png" alt="crackme2_1" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Analysis then focuses on the right execution branch, where the password string is retrieved from the <span id="inline-code">.rodata</span> section and compared against 
+                    the user-supplied input stored in <span id="inline-code">EAX</span>. If the comparison succeeds, 0 is stored in <span id="inline-code">EAX</span>, and execution proceeds
+                    to the right branch, where the message <strong>Access granted</strong> is displayed. Otherwise, execution follows the left branch, resulting in the message 
+                    <strong>Access denied</strong>.
+                    <br>
+                    <img src="../../img/re_crackme/crackme2_2.png" alt="crackme2_2" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    In conclusion, it can be stated with certainty that the correct password is the one stored in the <span id="inline-code">.rodata</span> section, as illustrated in the figure below.
+                    <br>
+                    <img src="../../img/re_crackme/crackme2_3.png" alt="crackme2_3" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    By executing the program and providing the extracted password, the flag is successfully obtained.
+                    <br>
+                    <img src="../../img/re_crackme/crackme2_4.png" alt="crackme2_4" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
                 </p>
+            <h2>Crackme3</h2>
         </section>
     </section>
 
