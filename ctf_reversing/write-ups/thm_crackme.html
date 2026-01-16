@@ -137,8 +137,53 @@
                 </p>
             <h2>Crackme4</h2>
                 <p>
-                    
+                    In the fourth scenario, the initial behavior remains the same: the program expects a user parameter as input, which is treated as the password. 
+                    If an input string is provided, execution follows the right branch and reaches the function <span id="inline-code">compare_pwd</span>, where the password 
+                    validation logic is implemented.
+                    <br>
+                    <img src="../../img/re_crackme/crackme4_1.png" alt="crackme4_1" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The figure below shows the <span id="inline-code">compare_pwd</span> function. In this case, the password string is more hidden compared to the previous three samples. 
+                    In the first two scenarios, the password was stored in cleartext, while in the third scenario it was encoded but still directly visible in memory. 
+                    In contrast, this sample does not expose the password in an immediately readable form. The function also invokes <span id="inline-code">get_pwd</span>, which is analyzed at a 
+                    later stage, and uses <span id="inline-code">strcmp</span> to compare the user input with the password embedded within the program, determining whether the two values match.
+                    <br>
+                    <img src="../../img/re_crackme/crackme4_2.png" alt="crackme4_2" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Several operations are performed within this function. First, 48 bytes (<span id="inline-code">0x30</span>) are allocated on the stack. The value contained in the 
+                    <span id="inline-code">RDI</span> register is then saved on the stack at <span id="inline-code">[RBP+s2]</span>. Next, the user input stored in the 
+                    <span id="inline-code">RAX</span> register is moved onto the stack at <span id="inline-code">[RBP+s1]</span>. So this means that <span id="inline-code">s1 = user_input</span> 
+                    and <span id="inline-code">s2 = password</span>. The function then initializes a sequence of constants directly on the stack. Specifically, the value 
+                    <span id="inline-code">7B175614497B5D49h</span> is moved into <span id="inline-code">RAX</span> and stored on the stack, followed by <span id="inline-code">0x547B175651474157</span>,
+                    then <span id="inline-code">0x4053</span>, and finally a terminating <span id="inline-code">0x0</span> value. These instructions allow the reconstruction of the encrypted password.
+                    It is important to note that these values are written to memory using little-endian format, meaning that the byte order is reversed in memory. For example, the value 
+                    <span id="inline-code">0x7B175614497B5D49</span> is stored as <span id="inline-code">49 5D 7B 49 14 56 17 7B</span> in memory. The same byte-order reversal applies to 
+                    the remaining constants. 
+                    <br>
+                    <img src="../../img/re_crackme/crackme4_3.png" alt="crackme4_3" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Execution then reaches the <span id="inline-code">get_pwd</span> function. Within this function, a loop is implemented in which the encrypted password stored at 
+                    <span id="inline-code">RBP+var_18</span> is processed one byte at a time. Each byte is XORed with the value <span id="inline-code">0x24</span>, which acts as 
+                    the decryption key. This operation effectively decrypts the password at runtime before it is used in the subsequent comparison.
+                    <br>
+                    <img src="../../img/re_crackme/crackme4_4.png" alt="crackme4_4" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    At this point, the previously reconstructed encrypted password can be combined with the <span id="inline-code">0x24</span> XOR key. By applying this operation using a 
+                    tool such as <strong>CyberChef</strong>, the decrypted password is recovered, as shown in the figure below.
+                    <br>
+                    <img src="../../img/re_crackme/crackme4_5.png" alt="crackme4_5" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
                 </p>
+            <h2>Crackme5</h2>
         </section>
     </section>
 
