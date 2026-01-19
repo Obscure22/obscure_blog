@@ -59,7 +59,7 @@
                             onmouseout="this.style.cursor='default'">
                     <br><br>
                     Therefore, by executing the program within <strong>IDA</strong> and placing a breakpoint on the puts function, it is possible to inspect the contents of the 
-                    <span id="inline-code">RAX</span> register at runtime and directly observe the decrypted string in cleartext. Alternatively, simply running the binary from 
+                    <span id="inline-code">rax</span> register at runtime and directly observe the decrypted string in cleartext. Alternatively, simply running the binary from 
                     the terminal is sufficient to display the decrypted string, as it is printed to standard output.
                     <br>
                     <img src="../../img/re_crackme/crackme1_3.png" alt="crackme1_3" onclick="window.open(this.src, '_blank');"
@@ -68,7 +68,7 @@
                 </p>
             <h2>Crackme2</h2>
                 <p>
-                    In this second scenario, as shown in the figure below, the program first performs a comparison between the value pointed to by <span id="inline-code">EAX</span> and 2. 
+                    In this second scenario, as shown in the figure below, the program first performs a comparison between the value pointed to by <span id="inline-code">eax</span> and 2. 
                     This indicates that the program expects one command-line argument; if this condition is not met, it prints the message <span id="inline-code">Usage: %s password</span> and 
                     terminates. This behavior confirms that the program requires a password as the second command-line parameter, although the correct value is not immediately known.
                     <br>
@@ -77,7 +77,7 @@
                             onmouseout="this.style.cursor='default'">
                     <br><br>
                     Analysis then focuses on the right execution branch, where the password string is retrieved from the <span id="inline-code">.rodata</span> section and compared against 
-                    the user-supplied input stored in <span id="inline-code">EAX</span>. If the comparison succeeds, 0 is stored in <span id="inline-code">EAX</span>, and execution proceeds
+                    the user-supplied input stored in <span id="inline-code">eax</span>. If the comparison succeeds, 0 is stored in <span id="inline-code">eax</span>, and execution proceeds
                     to the right branch, where the message "Access granted" is displayed. Otherwise, execution follows the left branch, resulting in the message 
                     "Access denied".
                     <br>
@@ -106,7 +106,7 @@
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
-                    Following the right execution branch, several operations are performed. The user input string, stored in <span id="inline-code">EDI</span>, is retrieved, and memory is 
+                    Following the right execution branch, several operations are performed. The user input string, stored in <span id="inline-code">edi</span>, is retrieved, and memory is 
                     allocated using <span id="inline-code">malloc</span> based on the length of the input. If the memory allocation succeeds, execution continues into the left branch, 
                     where <span id="inline-code">strlen</span> is invoked twice. Before the second <span id="inline-code">strlen</span> call, the function <strong>sub_80486B0</strong> is executed. 
                     This subroutine applies an encryption routine to the input string. The encrypted string is then passed to the second <span id="inline-code">strlen</span>, which computes its length.
@@ -119,7 +119,7 @@
                     <br><br>
                     If the length check succeeds, execution continues along the left branch. As illustrated in the figure below, this branch references a string stored in the
                     <span id="inline-code">.rodata</span> section at address <span id="inline-code">0x08048E8B</span>. This string appears to be encrypted. The program then calls 
-                    <span id="inline-code">strcmp</span>, comparing the encrypted user input (stored in <span id="inline-code">ESI</span>) with this encrypted reference string. 
+                    <span id="inline-code">strcmp</span>, comparing the encrypted user input (stored in <span id="inline-code">esi</span>) with this encrypted reference string. 
                     If the comparison returns 0, indicating that the two strings are equal, execution proceeds to the branch, where a call to <span id="inline-code">puts</span>
                     prints the message “Correct password!”.
                     <br>
@@ -155,11 +155,11 @@
                             onmouseout="this.style.cursor='default'">
                     <br><br>
                     Several operations are performed within this function. First, 48 bytes (<span id="inline-code">0x30</span>) are allocated on the stack. The value contained in the 
-                    <span id="inline-code">RDI</span> register is then saved on the stack at <span id="inline-code">[RBP+s2]</span>. Next, the user input stored in the 
-                    <span id="inline-code">RAX</span> register is moved onto the stack at <span id="inline-code">[RBP+s1]</span>. So this means that <span id="inline-code">s1 = user_input</span> 
+                    <span id="inline-code">rdi</span> register is then saved on the stack at <span id="inline-code">[RBP+s2]</span>. Next, the user input stored in the 
+                    <span id="inline-code">RAX</span> register is moved onto the stack at <span id="inline-code">rbp+s1</span>. So this means that <span id="inline-code">s1 = user_input</span> 
                     and <span id="inline-code">s2 = encrypted_password</span>. The function then initializes a sequence of constants directly on the stack. Specifically, the value 
-                    <span id="inline-code">7B175614497B5D49h</span> is moved into <span id="inline-code">RAX</span> and stored on the stack, followed by <span id="inline-code">547B175651474157h</span>,
-                    then <span id="inline-code">4053h</span>, and finally a terminating <span id="inline-code">0x0</span> value. These instructions allow the reconstruction of the encrypted password.
+                    <span id="inline-code">7B175614497B5D49h</span> is moved into <span id="inline-code">rax</span> and stored on the stack, followed by <span id="inline-code">547B175651474157h</span>,
+                    then <span id="inline-code">0x4053</span>, and finally a terminating <span id="inline-code">0x0</span> value. These instructions allow the reconstruction of the encrypted password.
                     It is important to note that these values are written to memory using little-endian format, meaning that the byte order is reversed in memory. For example, the value 
                     <span id="inline-code">0x7B175614497B5D49</span> is stored as <span id="inline-code">49 5D 7B 49 14 56 17 7B</span> in memory. The same byte-order reversal applies to 
                     the remaining constants. 
@@ -169,7 +169,7 @@
                             onmouseout="this.style.cursor='default'">
                     <br><br>
                     Execution then reaches the <span id="inline-code">get_pwd</span> function. Within this function, a loop is implemented in which the encrypted password stored at 
-                    <span id="inline-code">RBP+var_18</span> is processed one byte at a time. Each byte is XORed with the value <span id="inline-code">0x24</span>, which acts as 
+                    <span id="inline-code">rbp+var_18</span> is processed one byte at a time. Each byte is XORed with the value <span id="inline-code">0x24</span>, which acts as 
                     the decryption key. This operation effectively decrypts the password at runtime before it is used in the subsequent comparison.
                     <br>
                     <img src="../../img/re_crackme/crackme4_4.png" alt="crackme4_4" onclick="window.open(this.src, '_blank');"
