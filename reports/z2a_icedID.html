@@ -217,8 +217,8 @@
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
-                    The next function of interest is <span id="inline-code">sub_40133E</span>. Within this function, a DWORD located at <span id="inline-code">ESI + 0x57</span> is compared against 
-                    the value <span id="inline-code">0x54414449</span>, which corresponds to the ASCII string “TADI” when decoded (e.g., using CyberChef). Due to little-endian representation, 
+                    The next function of interest is <span id="inline-code">sub_40133E</span>. Within this function, a DWORD located at <span id="inline-code">esi + 0x57</span> is compared against 
+                    the value <span id="inline-code">0x54414449</span>, which corresponds to the ASCII string “TADI” when decoded (e.g., using <strong>CyberChef</strong>). Due to little-endian representation, 
                     IDA displays the string in reverse order. If the comparison succeeds, the function executes a series of shift left and shift right instructions, followed by data movement operations. 
                     It then allocates heap memory and performs an RC4 decryption routine. The presence of the RC4 decryption logic strongly suggests that the content stored in <span id="inline-code">photo.png</span> 
                     is RC4 encrypted. Based on its functionality, this subroutine can be renamed to <strong>decrypt_png_file</strong>.
