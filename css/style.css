@@ -154,7 +154,7 @@ body {
   display: grid;
   /*auto-fill = Create as many columns as will fit, each at least 250px wide, and let them automatically expand to fill the available space*/
   /*4 = create only 4 columns for each row*/
-  grid-template-columns: repeat(4, minmax(250px, 1fr)); 
+  grid-template-columns: repeat(3, minmax(250px, 1fr)); 
   gap: 2rem;
   margin-top: 3rem;
 }
