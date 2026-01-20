@@ -220,12 +220,19 @@
                 </p>
             <h2>Crackme6</h2>
                 <p>
-                    <br>
                     Scenario 6 is initially similar to scenario 4. In this case as well, the program expects an input from the user; if no input is provided, it prints the message 
                     “<span id="inline-code">Usage : %s password', Good luck, read the source</span>”. 
                     If the input is provided, it is stored on the stack at <span id="inline-code">rbp+var_10</span>, the execution flows to the right branch, and the function 
                     <span id="inline-code">compare_pwd</span> is then invoked.
+                    <br>
                     <img src="../../img/re_crackme/crackme6_1.png" alt="crackme6_1" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Within the <span id="inline-code">compare_pwd</span> function, the user input stored in <span id="inline-code">rdi</span> is passed as an argument to the 
+                    <span id="inline-code">my_secure_test</span> function, as shown in the figure below.
+                    <br>
+                    <img src="../../img/re_crackme/crackme6_2.png" alt="crackme6_2" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
                             onmouseout="this.style.cursor='default'">
                     <br><br>
