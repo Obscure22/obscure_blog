@@ -50,20 +50,20 @@
                     but not high enough to clearly indicate heavy packing or encryption.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_1.png" alt="icedID_1" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     In the <strong>debug</strong> section, a file path is present that serves as a strong indicator that the sample is likely packed. 
                     The path appears to be meaningless and does not correspond to a valid location, suggesting that it is merely junk data.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_2.png" alt="icedID_2" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     In the <strong>library</strong> section, the sample loads only two libraries. This limited set of imported libraries is another indicator that the binary is likely packed.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_3.png" alt="icedID_3" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     In the <strong>strings</strong> section, there are strange strings and this is another indicator of packing.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_4.png" alt="icedID_4" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Continuing with the <strong>strings</strong> section, several compiler-related strings are present. 
                     Their presence, combined with the other observations, serves as an additional indicator that the sample is packed.
                     <br>
@@ -77,40 +77,40 @@
                     to track memory allocation, changes in memory protections, process creation, and potential anti-debugging checks.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_6.png" alt="icedID_6" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     When the code is executed, execution breaks on the first <span id="inline-code">VirtualAlloc</span> call. The code is then executed until the function returns, 
                     after which the value stored in <span id="inline-code">eax</span> representing the allocated memory address. The image below shows the data stored in this memory 
                     region that could be a shellcode.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_7.png" alt="icedID_7" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The next <span id="inline-code">VirtualAlloc</span> call is handled in the same way. This allocation appears to contain additional data, possibly an array or a structured block.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_8.png" alt="icedID_8" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Another <span id="inline-code">VirtualAlloc</span> call occurs, and examining the stack parameters reveals that the allocation size is <span id="inline-code">0x418B</span> bytes 
                     and the memory protection is set to <span id="inline-code">0x40</span> (<span id="inline-code">PAGE_EXECUTE_READWRITE</span>).
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_9.png" alt="icedID_9" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     After executing the function until return and following the value stored in the <span id="inline-code">eax</span> register in the memory dump, the compressed executable becomes visible. 
                     This memory region contains the packed payload that will later be decompressed and executed.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_10.png" alt="icedID_10" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Execution is then paused at the <span id="inline-code">VirtualProtect</span> call. After executing the function until return, <strong>Step Over</strong> is used to return to the user code.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_11.png" alt="icedID_11" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     At this point, the next step is to locate the decompressed executable in memory. Execution reaches address <span id="inline-code">0x1E07F7</span>. 
                     In the memory dump, we follow the value at <span id="inline-code">ebx + 0x7014C2</span>.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_12.png" alt="icedID_12" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The decompressed executable is successfully recovered. The figure below shows the resulting unpacked binary image as it is reconstructed in memory after the decompression stage.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_13.png" alt="icedID_13" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The file is opened in <strong>PE-bear</strong> for inspection. All imports are visible and statically resolved, as the executable has not yet been mapped into memory.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_14.png" alt="icedID_14" onclick="window.open(this.src, '_blank');">
@@ -122,7 +122,7 @@
                     <span id="inline-code">ExitProcess</span>, indicating that the main execution logic is contained within that subroutine.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_15.png" alt="icedID_15" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Analysis then proceeds to the subroutine <span id="inline-code">sub_4014F9</span>. The first API call invoked is <span id="inline-code">SHGetFolderPathA</span>, which is used to retrieve the path of a specific system folder. 
                     A <span id="inline-code">CSIDL</span> value is passed to the function to specify which folder path should be retrieved. In this case, the value is <span id="inline-code">0x1C</span>, which corresponds to 
                     <span id="inline-code">CSIDL_LOCAL_APPDATA</span>. The output of the function is stored in <span id="inline-code">pszPath</span>, which contains the path to the Local AppData directory. 
@@ -131,7 +131,7 @@
                     execution proceeds along the right branch.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_16.png" alt="icedID_16" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The first <span id="inline-code">lstrcatA</span> call follows. If execution comes from the right branch (i.e., the AppData folder exists), the function concatenates a "<strong>\\</strong>"
                     to the AppData path. Otherwise, coming from the left branch (when the AppData folder was not retrieved), it concatenates the fallback path <span id="inline-code">C:\\Users\\Public\\</span> to 
                     <span id="inline-code">eax</span>, which in this case is 0. A call to <span id="inline-code">lstrlenA</span> follows, after which <span id="inline-code">GetUserNameA</span> is invoked to retrieve 
@@ -140,37 +140,37 @@
                     As a result, a directory named after the user is created, and within it a file named <span id="inline-code">photo.png</span>, which may contain an encrypted or obfuscated payload.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_17.png" alt="icedID_17" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Next, as shown in the figure above, the value of <span id="inline-code">dword_403008</span> is moved into the <span id="inline-code">eax</span> register. 
                     Subsequently, the offset of <span id="inline-code">unk_403000</span> is stored in <span id="inline-code">var_24</span>, which likely references additional encrypted or obfuscated data that is used later during execution.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_18.png" alt="icedID_18" onclick="window.open(this.src, '_blank');">
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_19.png" alt="icedID_19" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Within the subroutine <span id="inline-code">sub_40186E</span>, the figure below shows the sample allocates heap memory for its own use. Execution then proceeds to the subroutine 
                     <span id="inline-code">sub_40180F</span>, where further processing is performed on the allocated memory.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_20.png" alt="icedID_20" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     In the subroutine <span id="inline-code">sub_40180F</span>, the constant <span id="inline-code">0x100</span> (<strong>256</strong> in decimal) is immediately noticeable, along with the presence of two loops. 
                     This strongly suggests the implementation of an RC4‑like algorithm. The first loop appears to initialize the <strong>substitution box</strong>, while the second loop performs the scrambling 
                     (<strong>key‑scheduling</strong>) phase. After completing these operations, the function returns. Based on its behavior, this function can be renamed to <span id="inline-code">init_scramble_rc4</span>.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_21.png" alt="icedID_21" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Returning to the caller and scrolling further down, another relevant code segment becomes visible. Within this block, the presence of an XOR instruction can be observed. 
                     This indicates that after initializing and scrambling the substitution box, the algorithm proceeds to use it to perform RC4 decryption on the data, applying the keystream through XOR operations.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_22.png" alt="icedID_22" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The function <span id="inline-code">sub_401000</span> is then invoked, taking as input the previously retrieved path (<span id="inline-code">pszPath</span>). This path likely corresponds to the location 
                     where data obtained from the C2 server is stored. Within this function, several file-handling APIs are called, including <span id="inline-code">CreateFileA</span>, 
                     <span id="inline-code">GetFileSize</span>, <span id="inline-code">HeapAlloc</span>, and <span id="inline-code">ReadFile</span>. This sequence strongly suggests that the function checks 
                     whether the file <span id="inline-code">photo.png</span> already exists on disk. If the file is present, its contents are read into memory thus avoiding the need to download the payload again from the C2 server.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_23.png" alt="icedID_23" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The next function of interest is <span id="inline-code">sub_40133E</span>. Within this function, a DWORD located at <span id="inline-code">esi + 0x57</span> is compared against 
                     the value <span id="inline-code">0x54414449</span>, which corresponds to the ASCII string “TADI” when decoded (e.g., using <strong>CyberChef</strong>). Due to little-endian representation, 
                     IDA displays the string in reverse order. If the comparison succeeds, the function executes a series of shift left and shift right instructions, followed by data movement operations. 
@@ -178,18 +178,18 @@
                     is RC4 encrypted. Based on its functionality, this subroutine can be renamed to <strong>decrypt_png_file</strong>.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_24.png" alt="icedID_24" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Returning to the main function, execution reaches the call to <span id="inline-code">sub_401224</span>. Stepping into this subroutine there is a first invoked function, 
                     <span id="inline-code">sub_4010F6</span>. Within <span id="inline-code">sub_4010F6</span>, several arithmetic and logical operations can be observed, including subtraction, AND, and XOR instructions.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_25.png" alt="icedID_25" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Switching to the pseudocode view provides a higher-level understanding of the function’s logic. The picture below shows the function invoking <span id="inline-code">rdtsc</span>, 
                     which is used to read the processor’s time-stamp counter, followed by a call to <span id="inline-code">cpuid</span>, which immediately suggests the presence of anti-VM or anti-sandbox techniques. 
                     CPUID is an instruction-level detection method commonly used to identify virtualized environments, and such techniques are particularly difficult to bypass or detect reliably.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_26.png" alt="icedID_26" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Finally, the function enters a while loop. Within this loop, <span id="inline-code">eax</span> is set to 6 and <span id="inline-code">cpuid</span> is invoked again, 
                     after which the value <span id="inline-code">v25 = eax & 1</span> is computed. The function then sets <span id="inline-code">eax</span> to <span id="inline-code">0x40000000</span> and calls 
                     <span id="inline-code">cpuid</span> once more. After completing these operations, <span id="inline-code">wsprintfA</span> is called to format and store the collected data into a string using 
@@ -202,38 +202,38 @@
                     </ul>
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_27.png" alt="icedID_27" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Returning to <span id="inline-code">sub_401224</span>, the first call to <span id="inline-code">wsprintfA</span> can be observed. This function builds a formatted string using several 
                     input parameters: an <span id="inline-code">LPSTR v11</span>, the format string <span id="inline-code">\photo.png?id=%0.2X%0.2X…</span>, the constant value 1, <span id="inline-code">dword_403008</span> 
                     (which contains encrypted data), v4 (the value obtained from the RDTSC instruction), and v8, which is the string generated by the anti-VM routine and can be renamed to <strong>pc_info</strong>.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_28.png" alt="icedID_28" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Execution then enters a while loop, where <span id="inline-code">url_string</span> is assigned to v13. Inside the loop, a conditional check is performed: 
                     <span id="inline-code">if sub_40164B(a2) returns 200</span>, execution breaks out of the loop. This suggest that the subroutine <span id="inline-code">sub_40164B</span> is responsible for establishing 
                     a connection to the C2 server and issuing a request using the constructed URL.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_29.png" alt="icedID_29" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Stepping into <span id="inline-code">sub_40164B</span> reveals that the function implements network communication using the WinHTTP API. Specifically, it invokes 
                     <span id="inline-code">WinHttpOpen</span>, <span id="inline-code">WinHttpConnect</span>, and <span id="inline-code">WinHttpOpenRequest</span> to establish a connection and 
                     issue an HTTP GET request to the C2 server. The function then calls <span id="inline-code">WinHttpSetOption</span>, followed by <span id="inline-code">WinHttpSendRequest</span> and 
                     <span id="inline-code">WinHttpReceiveResponse</span> to send the request and receive the server’s response.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_30.png" alt="icedID_30" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     A particularly interesting aspect of this function is the call to <span id="inline-code">WinHttpSendRequest</span>. No data is sent to the server, as the <span id="inline-code">ebx</span> 
                     register is explicitly set to zero using an XOR operation. This behavior suggests that the request is likely used as a connectivity check, simply verifying whether the C2 server is 
                     reachable and responsive. Based on this observation, the function <span id="inline-code">sub_40164B</span> can be renamed to <strong>check_c2</strong>. 
                     And the function <span id="inline-code">sub_401224</span> can be renamed to <strong>communications</strong>.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_31.png" alt="icedID_31" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Therefore, if the sample is able to successfully communicate with the C2 server or decrypt the required file, execution proceeds to <span id="inline-code">sub_40109A</span>. 
                     Otherwise, the function returns 0, terminating further execution.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_32.png" alt="icedID_32" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Within <span id="inline-code">sub_40109A</span>, the function <span id="inline-code">CreateFileA</span> is invoked to create or open a file. The <span id="inline-code">dwDesiredAccess</span> parameter is 
                     set to <span id="inline-code">0x40000000</span> (<strong>GENERIC_WRITE</strong>), granting write access, while <span id="inline-code">dwCreationDisposition</span> is set to 2 
                     (<strong>CREATE_ALWAYS</strong>), ensuring that the file is created anew or overwritten if it already exists. The function then calls <span id="inline-code">WriteFile</span>, 
@@ -241,7 +241,7 @@
                     Based on this behavior, the subroutine can be renamed to <strong>write_png</strong>.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_33.png" alt="icedID_33" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The function then calls <span id="inline-code">sub_4013EB</span>, which in turn invokes <span id="inline-code">VirtualAlloc</span> to allocate <span id="inline-code">0x758</span> (<strong>1880</strong> in decimal) 
                     bytes of memory. The allocated region is assigned <span id="inline-code">PAGE_READWRITE</span> (<span id="inline-code">0x4</span>) permissions, allowing both read and write operations. 
                     A call to <span id="inline-code">GetModuleFileNameA</span> follows, with <span id="inline-code">hModule</span> set to NULL, indicating that the function retrieves the full path of the 
@@ -250,7 +250,7 @@
                     The <span id="inline-code">flNewProtect</span> parameter is set to <span id="inline-code">0x20</span> (<span id="inline-code">PAGE_EXECUTE_READ</span>), making the memory region both executable and readable.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_34.png" alt="icedID_34" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                 </p>
             <h2>Dynamic Analysis</h2>
                 <p>
@@ -258,65 +258,65 @@
                     After the execution of <span id="inline-code">SHGetFolderPathA</span>, the retrieved directory path is stored in the <span id="inline-code">eax</span> register.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_35.png" alt="icedID_35" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Subsequently, execution follows the right branch, where a path separator ("<span id="inline-code">\\</span>") is concatenated to the previously retrieved directory path. 
                     The program then creates a directory named after the current user, and within this directory a file named photo.png is generated, as previously observed during the static analysis phase.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_36.png" alt="icedID_36" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The function <span id="inline-code">rc4_decrypt</span> takes five arguments. Among these, one argument has the value 8, which likely represents the key length, 
                     while another argument is <span id="inline-code">unk_A23000</span>, a buffer composed of 8 bytes. This strongly suggests that the 8-byte buffer stored at 
                     <span id="inline-code">unk_A23000</span> is used as the RC4 encryption key and the rest of the data, with size <span id="inline-code">0x248</span> bytes, is RC4 encrypted with that key. 
                     The figure below illustrates the function call and its arguments, and also displays the RC4 key value as observed in the hex dump.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_37.png" alt="icedID_37" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     At this point, the entire encryption routine can be executed. As observed in the memory dump at the end of the process, the initial 8 bytes remain unchanged, confirming that they 
                     represent the encryption key, while the remaining data is modified. The decrypted output reveals an <span id="inline-code">index.php</span> string followed by null bytes 
                     (<span id="inline-code">0x00</span>) and a list of C2 server URLs, clearly exposing the configuration data that was previously encrypted.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_38.png" alt="icedID_38" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The analysis proceeds to the communication routine, with the goal of understanding how the malware interacts with the C2 infrastructure. However, before reaching this stage, the execution 
                     flow passes through an anti-VM function. The figure below shows that, after executing the CPUID instruction with <span id="inline-code">eax = 0x40000000</span>, the returned value corresponds 
                     to the string <span id="inline-code">VBoxVBoxVBox</span>, indicating that the sample is running inside a VirtualBox virtualized environment.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_39.png" alt="icedID_39" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     After the <span id="inline-code">wsprintfA</span> call, the resulting string contains <span id="inline-code">0000000000FF</span>, which represents the increment measured via the RDTSC instruction. 
                     Following this, the string includes <span id="inline-code">40000006</span>, where the final value 6 appears to correspond to the VirtualBox identification obtained from the CPUID instruction.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_40.png" alt="icedID_40" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Once this string has been constructed, execution returns to the communication routine, where an additional call to wsprintfA is performed. At this point, it has created the <strong>photo.png</strong> 
                     string. It includes the campaign identifier, represented by the first DWORD, followed by the second DWORD, which corresponds to the timestamp obtained via the RDTSC instruction. 
                     The string also contains the output of the anti-VM routine (<span id="inline-code">0000000000FF</span>) and the processor/environment identifier <span id="inline-code">40000006</span>. 
                     The figure below shows the string which is appended to the URL.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_41.png" alt="icedID_41" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The figure below shows that the routine invokes <span id="inline-code">WinHttpOpen</span>, followed by a call to <span id="inline-code">WinHttpConnect</span>. 
                     In this invocation, the destination port is set to <span id="inline-code">0x1BB</span> (<strong>443</strong>), indicating communication over HTTPS, and the specified C2 server domain is 
                     <span id="inline-code">boldidiotruss.xyz</span>.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_42.png" alt="icedID_42" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The routine then calls <span id="inline-code">WinHttpOpenRequest</span>, where an HTTP GET request is constructed. The ObjectName parameter is set to 
                     <span id="inline-code">\photo.png?id=011e3d33fb0000000000FF40000006</span>, indicating that the previously generated identifier values are embedded directly into the request URI 
                     sent to the C2 server. Finally, the routine invokes <span id="inline-code">WinHttpSendRequest</span> to transmit the crafted HTTP GET request to the C2 server, and then calls 
                     <span id="inline-code">WinHttpReceiveResponse</span> to wait for and process the server’s response.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_43.png" alt="icedID_43" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     The routine then invokes <span id="inline-code">Sleep</span>, causing execution to pause for <span id="inline-code">0x1388</span> (<strong>5000</strong> ms) before continuing.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_44.png" alt="icedID_44" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                     Finally, as previously observed, the sample is configured to use four different C2 servers. It enters a loop in which it iteratively switches the C2 server and repeats the same communication logic, 
                     issuing identical requests to each server in sequence until a successful response is received.
                     <br>
                     <img class="post-image" src="../img/z2a_icedID/z2a_icedID_45.png" alt="icedID_45" onclick="window.open(this.src, '_blank');">
-                    <br><br>
+                    <br>
                 </p>
         </section>
     </section>
