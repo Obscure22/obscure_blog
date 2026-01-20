@@ -184,6 +184,34 @@
                             onmouseout="this.style.cursor='default'">
                 </p>
             <h2>Crackme5</h2>
+                <p>
+                    In the fifth scenario, the program prompts the user to provide an input. When attempting to enter the word <strong>test</strong>, the program prints the message 
+                    "<span id="inline-code">Always dig deeper</span>". As in the previous scenarios, this behavior indicates that the program expects a specific correct input in order to proceed further.
+                    <br>
+                    <img src="../../img/re_crackme/crackme5_1.png" alt="crackme5_1" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    By analyzing the binary in <strong>IDA</strong>, it is possible to observe that <span id="inline-code">0x70</span> bytes of stack space are allocated.
+                    Subsequently, the figure below shows a sequence of characters is stored on the stack, which clearly corresponds to a character array with a size of 28 bytes.
+                    <br>
+                    <img src="../../img/re_crackme/crackme5_2.png" alt="crackme5_2" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The program then calls puts and subsequently invokes <span id="inline-code">scanf</span> to store the user input. The address where the input is saved is initially held in the 
+                    <span id="inline-code">rax</span> register. After that, the address <span id="inline-code">ebp+var_30</span> is loaded into <span id="inline-code">rdx</span>, 
+                    which corresponds to the first byte, that is the first character, of the character array allocated earlier. This value is then moved into <span id="inline-code">rsi</span>. 
+                    The user input is stored in <span id="inline-code">ebp+var_50</span>, then moved into the <span id="inline-code">RDX</span> register, and finally 
+                    <span id="inline-code">strcmp</span> is invoked to compare the two strings.
+                    If the strings match, <span id="inline-code">strcmp</span> returns 0 and the program prints “<span id="inline-code">Good game</span>” otherwise it prints 
+                    “<span id="inline-code">Always dig deeper<span id="inline-code">”.
+                    <br>
+                    <img src="../../img/re_crackme/crackme5_3.png" alt="crackme5_3" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                </p>
         </section>
     </section>
 
