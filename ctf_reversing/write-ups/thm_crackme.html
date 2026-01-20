@@ -245,11 +245,11 @@
                     Let’s examine the first two blocks, corresponding to the first two <span id="inline-code">if</span> statements, as shown in the figure below. In the first 
                     <span id="inline-code">if</span>, the input string stored at <span id="inline-code">ebp+var_8</span> is moved into <span id="inline-code">rax</span>. 
                     The first byte of the string, stored in the <span id="inline-code">al</span> register, is then compared with <span id="inline-code">0x31</span>. 
-                    If the comparison succeeds, the program jumps to the second if.
+                    If the comparison succeeds, the program jumps to the second <span id="inline-code">if</span>.
                     <br>
                     The first two instructions in this second <span id="inline-code">if</span> increment <span id="inline-code">rax</span> by 1 to point to the second byte (the second character) of the string. 
                     <br>
-                    These operations, observed in these first two if statements, are repeated for all subsequent if conditions.
+                    These operations, observed in these first two <span id="inline-code">if</span> statements, are repeated for all subsequent <span id="inline-code">if</span> statements.
                     <br>
                     <img src="../../img/re_crackme/crackme6_4.png" alt="crackme6_4" onclick="window.open(this.src, '_blank');"
                             width="650", onmouseover="this.style.cursor='zoom-in'"
@@ -265,7 +265,53 @@
                 </p>
             <h2>Crackme7</h2>
                 <p>
-                    
+                    Challenge 7 differs from the previous challenges. When running the program, we can see that there are three options: the first prompts the user to enter a name, 
+                    the second asks for two numbers which are then added together, and the third option allows the user to quit the program.
+                    <br>
+                    <img src="../../img/re_crackme/crackme7_1.png" alt="crackme7_1" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Analyzing the program in <strong>IDA</strong>, it is possible to observe a <span id="inline-code">switch</span> statement that controls the flow. Based on the number entered 
+                    by the user, the program jumps to the block corresponding to that choice, provided the input is valid.
+                    <br>
+                    <img src="../../img/re_crackme/crackme7_2.png" alt="crackme7_2" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    Among all the cases in the <span id="inline-code">switch</span>, there is one that does not appear during normal execution of the program. This hidden case is shown in the 
+                    figure below. In this <span id="inline-code">switch</span> case, the user input, stored in the <span id="inline-code">eax</span> register, is compared with the value 
+                    <span id="inline-code">0x7A69</span>.
+                    <br>
+                    <img src="../../img/re_crackme/crackme7_3.png" alt="crackme7_3" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    If the comparison succeeds, the program jumps to the block shown in the figure below, where the <span id="inline-code">giveFlag</span> function is called.
+                    <br>
+                    <img src="../../img/re_crackme/crackme7_4.png" alt="crackme7_4" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The <span id="inline-code">giveFlag</span> function is structured as follows.
+                    <br>
+                    <img src="../../img/re_crackme/crackme7_5.png" alt="crackme7_5" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
+                    The important part of this function is the loop shown in the figure below. The program performs <span id="inline-code">0x21</span> iterations (<strong>33</strong> cycles), 
+                    incrementing <span id="inline-code">var_1C</span> on each iteration. Within the loop, several operations are carried out, including manipulating a cell from the array 
+                    <span id="inline-code">var_A4</span>. These operations use the loop counter <span id="inline-code">var_1C</span> and the variable <span id="inline-code">var_C6</span>, 
+                    which points to the memory location where the deobfuscated string will be stored.
+                    <br>
+                    The logic is as follows: the array <span id="inline-code">var_A4</span> likely contains the correct string, but its characters are initially in the wrong positions. 
+                    Through the operations performed in the loop body, each character is moved to its correct position and written into <span id="inline-code">var_C6</span>, which was initially 
+                    filled with the character <span id="inline-code">A</span> using <span id="inline-code">memset</span>.
+                    <br>
+                    <img src="../../img/re_crackme/crackme7_6.png" alt="crackme7_6" onclick="window.open(this.src, '_blank');"
+                            width="650", onmouseover="this.style.cursor='zoom-in'"
+                            onmouseout="this.style.cursor='default'">
+                    <br><br>
                 </p>
         </section>
     </section>
