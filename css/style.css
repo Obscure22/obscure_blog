@@ -180,6 +180,14 @@ body {
   margin-bottom: 1rem;
 }
 
+.post-image {
+  width: 650px;
+  height: auto;
+  cursor: zoom-in;
+  display: block;
+  margin: 30px auto;
+}
+
 /* Footer */
 footer {
   background: var(--darker-bg);
