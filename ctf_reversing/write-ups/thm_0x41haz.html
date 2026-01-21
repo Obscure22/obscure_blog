@@ -46,13 +46,13 @@
                     The first and most straightforward step is to execute the program. It immediately prompts the user to enter a password. Since the correct password is not yet known, a test 
                     value such as <strong>test</strong> can be provided, which results in the expected outcome: the password is incorrect.
 
-                    <img class="post-image" src="../../img/re_crackme/0x41haz_1.png" alt="0x41haz_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_1.png" alt="0x41haz_1" onclick="window.open(this.src, '_blank');">
 
                     Opening the binary in <strong>IDA</strong> shows the initial code at the program entry point, as illustrated in the figure below. From this, it is possible to observe that the 
                     execution has not yet reached the main function. The address of main is later loaded into the <span id="inline-code">rdi</span> register, and a call instruction is executed 
                     to transfer control to the program’s main function.
 
-                    <img class="post-image" src="../../img/re_crackme/0x41haz_2.png" alt="0x41haz_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_2.png" alt="0x41haz_2" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
