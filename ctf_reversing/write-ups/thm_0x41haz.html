@@ -47,7 +47,11 @@
                     value such as <strong>test</strong> can be provided, which results in the expected outcome: the password is incorrect.
 
                     <img class="post-image" src="../../img/re_crackme/0x41haz_1.png" alt="0x41haz_1" onclick="window.open(this.src, '_blank');">
-                    
+
+                    By opening the binary in <strong>IDA</strong>, the initial view shown in the figure below is presented. From this, it is possible to observe that the execution is not 
+                    yet inside the main function, but rather at the program entry point. The address of main is later loaded into the RDI register, and a call instruction is executed to transfer control to the program’s main function.
+
+                    <img class="post-image" src="../../img/re_crackme/0x41haz_2.png" alt="0x41haz_1" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
