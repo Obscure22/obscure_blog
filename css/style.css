@@ -319,8 +319,7 @@ footer {
   }
 
   .hero {
-    margin-top: 140px; /* navbar più alta su mobile */
-    /*padding: 20% 5%;*/
+    margin-top: 80px; /* navbar più alta su mobile */
   }
 
   .post-image {
