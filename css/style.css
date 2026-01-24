@@ -318,6 +318,11 @@ footer {
     padding-left: 2rem;
   }
 
+  .hero {
+    margin-top: 140px; /* navbar più alta su mobile */
+    /*padding: 20% 5%;*/
+  }
+
   .post-image {
     width: 100%;
     max-width: 100%;
