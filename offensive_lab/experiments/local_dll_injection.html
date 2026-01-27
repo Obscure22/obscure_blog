@@ -47,12 +47,12 @@
                 <p>
                     By opening <strong>Visual Studio</strong>, it is possible to create a DLL.
 
-                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_1.png" alt="local_dll_injection_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_1.png" alt="local_dll_injection_1">
 
                     This demo will utilize a message box that appears when the DLL is successfully loaded. Creating a message box can be easily done with the <span id="inline-code">MessageBox</span>
                     WinAPI.
 
-                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_2.png" alt="local_dll_injection_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_2.png" alt="local_dll_injection_2">
                 </p>
             <h2>Local Injection</h2>
                 <p>
@@ -60,18 +60,18 @@
                     <span id="inline-code">LoadLibraryA</span>, which in our case is the current process. Loading the DLL triggers the execution of its entry point and, consequently, 
                     the <span id="inline-code">MsgBox</span> function, causing the message box to appear.
 
-                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_3.png" alt="local_dll_injection_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_3.png" alt="local_dll_injection_3">
 
                     As expected, the message box successfully appears after injecting the DLL.
 
-                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_4.png" alt="local_dll_injection_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_4.png" alt="local_dll_injection_4">
                 </p>
             <h2>Analysis</h2>
                 <p>
                     For investigation, the first step consists of opening <strong>Process Hacker</strong> to inspect the running process and verify that the DLL has been successfully loaded into 
                     its address space. Opening the "Modules" tab, the DLL's name should appear in the list of modules.
 
-                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_5.png" alt="local_dll_injection_5" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_5.png" alt="local_dll_injection_5">
 
                     By analyzing the assembly code using <strong>IDA</strong>, it is possible to observe the program’s behavior at a low-level. No data is encrypted, which makes it possible to clearly see the DLL path 
                     in plaintext. As shown in the figure below, the DLL path is stored on the stack in <span id="inline-code">lpLibFileName</span>. The program then calls the 
@@ -79,11 +79,12 @@
                     <br>
                     If <span id="inline-code">LoadLibraryA</span> executes successfully, the program jumps to the right branch and prints "[+] Done!".
 
-                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_6.png" alt="local_dll_injection_6" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_6.png" alt="local_dll_injection_6">
                 </p>
         </section>
     </section>
 
     <script src="../../js/reading-time.js"></script>
+    <script src="../../js/image-zoom.js"></script>
 </body>
 </html>
