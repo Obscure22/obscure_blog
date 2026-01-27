@@ -49,18 +49,18 @@
                     This buffer appears to store obfuscated strings that are later decrypted at runtime. Subsequently, a call to <span id="inline-code">memset</span> is performed, 
                     which overwrites 27 bytes of the allocated buffer with the character <strong>A</strong> (<span id="inline-code">0x41</span>).
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme1_1.png" alt="crackme1_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme1_1.png" alt="crackme1_1">
                     
                     Next, a loop iterates over the encrypted array 26 times (as indicated by the comparison <span id="inline-code">cmp eax, 1Ah</span>). During each iteration, the data is progressively 
                     processed to recover the original content. Once the loop completes, the resulting decrypted string is printed to standard output using the <span id="inline-code">puts</span> function.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme1_2.png" alt="crackme1_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme1_2.png" alt="crackme1_2">
                     
                     Therefore, by executing the program within <strong>IDA</strong> and placing a breakpoint on the puts function, it is possible to inspect the contents of the 
                     <span id="inline-code">rax</span> register at runtime and directly observe the decrypted string in cleartext. Alternatively, simply running the binary from 
                     the terminal is sufficient to display the decrypted string, as it is printed to standard output.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme1_3.png" alt="crackme1_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme1_3.png" alt="crackme1_3">
                 </p>
             <h2>Crackme2</h2>
                 <p>
@@ -68,29 +68,29 @@
                     This indicates that the program expects one command-line argument; if this condition is not met, it prints the message <span id="inline-code">Usage: %s password</span> and 
                     terminates. This behavior confirms that the program requires a password as the second command-line parameter, although the correct value is not immediately known.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme2_1.png" alt="crackme2_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme2_1.png" alt="crackme2_1">
                     
                     Analysis then focuses on the right execution branch, where the password string is retrieved from the <span id="inline-code">.rodata</span> section and compared against 
                     the user-supplied input stored in <span id="inline-code">eax</span>. If the comparison succeeds, 0 is stored in <span id="inline-code">eax</span>, and execution proceeds
                     to the right branch, where the message "Access granted" is displayed. Otherwise, execution follows the left branch, resulting in the message 
                     "Access denied".
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme2_2.png" alt="crackme2_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme2_2.png" alt="crackme2_2">
                     
                     In conclusion, it can be stated with certainty that the correct password is the one stored in the <span id="inline-code">.rodata</span> section, as illustrated in the figure below.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme2_3.png" alt="crackme2_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme2_3.png" alt="crackme2_3">
                     
                     By executing the program and providing the extracted password, the flag is successfully obtained.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme2_4.png" alt="crackme2_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme2_4.png" alt="crackme2_4">
                 </p>
             <h2>Crackme3</h2>
                 <p>
                     The program first performs the same comparison observed previously, confirming that it expects a password to be provided as a command-line parameter before proceeding 
                     with execution.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme3_1.png" alt="crackme3_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme3_1.png" alt="crackme3_1">
                     
                     Following the right execution branch, several operations are performed. The user input string, stored in <span id="inline-code">edi</span>, is retrieved, and memory is 
                     allocated using <span id="inline-code">malloc</span> based on the length of the input. If the memory allocation succeeds, execution continues into the left branch, 
@@ -99,7 +99,7 @@
                     If the resulting length is not equal to 64 bytes (<span id="inline-code">0x40</span> in hexadecimal), execution follows the right branch and the program prints the message:
                     “Come on, even my aunt Mildred got this one!”.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme3_2.png" alt="crackme3_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme3_2.png" alt="crackme3_2">
                     
                     If the length check succeeds, execution continues along the left branch. As illustrated in the figure below, this branch references a string stored in the
                     <span id="inline-code">.rodata</span> section at address <span id="inline-code">0x08048E8B</span>. This string appears to be encrypted. The program then calls 
@@ -107,13 +107,13 @@
                     If the comparison returns 0, indicating that the two strings are equal, execution proceeds to the branch, where a call to <span id="inline-code">puts</span>
                     prints the message “Correct password!”.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme3_3.png" alt="crackme3_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme3_3.png" alt="crackme3_3">
                     
                     At this point, the only remaining step is to decrypt the string stored in the <span id="inline-code">.rodata</span> section. It can be immediately observed that this 
                     string is Base64-encoded. By decoding it using a tool such as <strong>CyberChef</strong>, the original value is recovered, which corresponds to both the correct password 
                     and the flag (The decoded string must then be wrapped in the format <strong>flag{}</strong>, producing the final flag value).
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme3_4.png" alt="crackme3_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme3_4.png" alt="crackme3_4">
                 </p>
             <h2>Crackme4</h2>
                 <p>
@@ -121,14 +121,14 @@
                     If an input string is provided, execution follows the right branch and reaches the function <span id="inline-code">compare_pwd</span>, where the password 
                     validation logic is implemented.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme4_1.png" alt="crackme4_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme4_1.png" alt="crackme4_1">
                     
                     The figure below shows the <span id="inline-code">compare_pwd</span> function. In this case, the password string is more hidden compared to the previous three samples. 
                     In the first two scenarios, the password was stored in cleartext, while in the third scenario it was encoded but still directly visible in memory. 
                     In contrast, this sample does not expose the password in an immediately readable form. The function also invokes <span id="inline-code">get_pwd</span>, which is analyzed at a 
                     later stage, and uses <span id="inline-code">strcmp</span> to compare the user input with the password embedded within the program, determining whether the two values match.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme4_2.png" alt="crackme4_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme4_2.png" alt="crackme4_2">
                     
                     Several operations are performed within this function. First, 48 bytes (<span id="inline-code">0x30</span>) are allocated on the stack. The value contained in the 
                     <span id="inline-code">rdi</span> register is then saved on the stack at <span id="inline-code">[RBP+s2]</span>. Next, the user input stored in the 
@@ -140,30 +140,30 @@
                     <span id="inline-code">0x7B175614497B5D49</span> is stored as <span id="inline-code">49 5D 7B 49 14 56 17 7B</span> in memory. The same byte-order reversal applies to 
                     the remaining constants. 
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme4_3.png" alt="crackme4_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme4_3.png" alt="crackme4_3">
                     
                     Execution then reaches the <span id="inline-code">get_pwd</span> function. Within this function, a loop is implemented in which the encrypted password stored at 
                     <span id="inline-code">rbp+var_18</span> is processed one byte at a time. Each byte is XORed with the value <span id="inline-code">0x24</span>, which acts as 
                     the decryption key. This operation effectively decrypts the password at runtime before it is used in the subsequent comparison.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme4_4.png" alt="crackme4_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme4_4.png" alt="crackme4_4">
                     
                     At this point, the previously reconstructed encrypted password can be XORed with the key <span id="inline-code">0x24</span>. By applying this operation using a 
                     tool such as <strong>CyberChef</strong>, the decrypted password is recovered, as shown in the figure below.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme4_5.png" alt="crackme4_5" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme4_5.png" alt="crackme4_5">
                 </p>
             <h2>Crackme5</h2>
                 <p>
                     In the fifth scenario, the program prompts the user to provide an input. When attempting to enter the word <strong>test</strong>, the program prints the message 
                     "<span id="inline-code">Always dig deeper</span>". As in the previous scenarios, this behavior indicates that the program expects a specific correct input in order to proceed further.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme5_1.png" alt="crackme5_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme5_1.png" alt="crackme5_1">
                     
                     By analyzing the binary in <strong>IDA</strong>, it is possible to observe that <span id="inline-code">0x70</span> bytes of stack space are allocated.
                     Subsequently, the figure below shows a sequence of characters is stored on the stack, which clearly corresponds to a character array with a size of 28 bytes.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme5_2.png" alt="crackme5_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme5_2.png" alt="crackme5_2">
                     
                     The program then calls puts and subsequently invokes <span id="inline-code">scanf</span> to store the user input. The address where the input is saved is initially held in the 
                     <span id="inline-code">rax</span> register. After that, the address <span id="inline-code">ebp+var_30</span> is loaded into <span id="inline-code">rdx</span>, 
@@ -173,12 +173,12 @@
                     If the strings match, <span id="inline-code">strcmp</span> returns 0 and the program prints “<span id="inline-code">Good game</span>” otherwise it prints 
                     “<span id="inline-code">Always dig deeper</span>”.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme5_3.png" alt="crackme5_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme5_3.png" alt="crackme5_3">
                     
                     As can be observed, in this scenario there are no deobfuscation or decryption operations involved. The string stored in the array is compared directly, as is, with the user input. 
                     Therefore, it is sufficient to extract this string and provide it as input to the program in order to solve the challenge.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme5_4.png" alt="crackme5_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme5_4.png" alt="crackme5_4">
                 </p>
             <h2>Crackme6</h2>
                 <p>
@@ -187,16 +187,16 @@
                     If the input is provided, it is stored on the stack at <span id="inline-code">rbp+var_10</span>, the execution flows to the right branch, and the function 
                     <span id="inline-code">compare_pwd</span> is then invoked.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme6_1.png" alt="crackme6_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme6_1.png" alt="crackme6_1">
                     
                     Within the <span id="inline-code">compare_pwd</span> function, the user input stored in <span id="inline-code">rdi</span> is passed as an argument to the 
                     <span id="inline-code">my_secure_test</span> function, as shown in the figure below.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme6_2.png" alt="crackme6_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme6_2.png" alt="crackme6_2">
                     
                     Inside the <span id="inline-code">my_secure_test</span> function, a cascade of <span id="inline-code">if</span> statements is used to compare different parts of the input string.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme6_3.png" alt="crackme6_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme6_3.png" alt="crackme6_3">
                     
                     Let’s examine the first two blocks, corresponding to the first two <span id="inline-code">if</span> statements, as shown in the figure below. In the first 
                     <span id="inline-code">if</span>, the input string stored at <span id="inline-code">ebp+var_8</span> is moved into <span id="inline-code">rax</span>. 
@@ -207,39 +207,39 @@
                     <br>
                     These operations, observed in these first two <span id="inline-code">if</span> statements, are repeated for all subsequent <span id="inline-code">if</span> statements.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme6_4.png" alt="crackme6_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme6_4.png" alt="crackme6_4">
                     
                     This means that by examining each comparison in its respective <span id="inline-code">if</span> statement, we can reconstruct the correct string. In the end, the sequence 
                     of characters compared with the user input forms the string <span id="inline-code">1337_pwd</span>, which is exactly the value that solves the challenge, 
                     as shown in the figure below.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme6_5.png" alt="crackme6_5" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme6_5.png" alt="crackme6_5">
                 </p>
             <h2>Crackme7</h2>
                 <p>
                     Challenge 7 differs from the previous challenges. When running the program, we can see that there are three options: the first prompts the user to enter a name, 
                     the second asks for two numbers which are then added together, and the third option allows the user to quit the program.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme7_1.png" alt="crackme7_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme7_1.png" alt="crackme7_1">
                     
                     Analyzing the program in <strong>IDA</strong>, it is possible to observe a <span id="inline-code">switch</span> statement that controls the flow. Based on the number entered 
                     by the user, the program jumps to the block corresponding to that choice, provided the input is valid.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme7_2.png" alt="crackme7_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme7_2.png" alt="crackme7_2">
                     
                     Among all the cases in the <span id="inline-code">switch</span>, there is one that does not appear during normal execution of the program. This hidden case is shown in the 
                     figure below. In this <span id="inline-code">switch</span> case, the user input, stored in the <span id="inline-code">eax</span> register, is compared with the value 
                     <span id="inline-code">0x7A69</span>.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme7_3.png" alt="crackme7_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme7_3.png" alt="crackme7_3">
                     
                     If the comparison succeeds, the program jumps to the block shown in the figure below, where the <span id="inline-code">giveFlag</span> function is called.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme7_4.png" alt="crackme7_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme7_4.png" alt="crackme7_4">
                     
                     The <span id="inline-code">giveFlag</span> function is structured as follows.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme7_5.png" alt="crackme7_5" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme7_5.png" alt="crackme7_5">
                     
                     The important part of this function is the loop shown in the figure below. The program performs <span id="inline-code">0x21</span> iterations (<strong>33</strong> cycles), 
                     incrementing <span id="inline-code">var_1C</span> on each iteration. Within the loop, several operations are carried out, including manipulating a cell from the array 
@@ -250,13 +250,13 @@
                     Through the operations performed in the loop body, each character is moved to its correct position and written into <span id="inline-code">var_C6</span>, which was initially 
                     filled with the character <span id="inline-code">A</span> using <span id="inline-code">memset</span>.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme7_6.png" alt="crackme7_6" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme7_6.png" alt="crackme7_6">
                     
                     All of this analysis mainly serves to understand the program logic. Since these operations are performed at runtime, it is sufficient to identify the presence of an additional 
                     hidden switch case corresponding to the value <span id="inline-code">31337</span> that can be provided as user input. By entering this value, the execution reaches the 
                     hidden code path and the program reveals the flag.
                     
-                    <img class="post-image" src="../../img/re_crackme/crackme7_7.png" alt="crackme7_7" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme7_7.png" alt="crackme7_7">
                 </p>
             <h2>Crackme8</h2>
                 <p>
@@ -264,20 +264,21 @@
                     the function <span id="inline-code">atoi</span> is called. This function converts the input string into an integer value. The program then compares the converted value 
                     with <span id="inline-code">0xCAFEF00D</span>.
 
-                    <img class="post-image" src="../../img/re_crackme/crackme8_1.png" alt="crackme8_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme8_1.png" alt="crackme8_1">
 
                     To solve the challenge, it is sufficient to take the value 0xCAFEF00D and convert it into its decimal representation.
 
-                    <img class="post-image" src="../../img/re_crackme/crackme8_2.png" alt="crackme8_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme8_2.png" alt="crackme8_2">
 
                     After that, the integer value can be provided as input. When using the positive value, access is denied; however, when the corresponding negative value is supplied, 
                     the program reveals the flag.
 
-                    <img class="post-image" src="../../img/re_crackme/crackme8_3.png" alt="crackme8_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_crackme/crackme8_3.png" alt="crackme8_3">
                 </p>
         </section>
     </section>
 
     <script src="../../js/reading-time.js"></script>
+    <script src="../../js/image-zoom.js"></script>
 </body>
 </html>
