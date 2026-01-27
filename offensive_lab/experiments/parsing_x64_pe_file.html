@@ -58,7 +58,6 @@
                     which correspond to the characters <span id="inline-code">MZ</span>. These bytes identifies the file as a valid executable and they are called 
                     <span id="inline-code">Magic number</span>. The DOS header is a data structure which contains several data items. The most important are: <span id="inline-code">e_magic</span>
                     which is the Magic number and <span id="inline-code">e_lfanew</span> which is a 4-byte value that gives the offset to the start of the NT Header. 
-                    The <span id="inline-code">e_lfanew</span> field is always found at offset <span id="inline-code">0x3C</span>.
                     <br><br>
                     The C code snippet below shows the file handle being passed to the <span id="inline-code">Parsing_pe</span> function. This handle is then used to map 
                     the file into memory. After mapping, a pointer to the DOS header, <span id="inline-code">pImgDosHdr</span>, is obtained for the file in memory. 
@@ -70,6 +69,10 @@
                     file is a valid executable.
 
                     <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_3.png" alt="parsing_x64_pe_file_3" onclick="window.open(this.src, '_blank');">
+
+                    For completeness, the figure below shows the output of all the fields in the DOS header with their corresponding values.
+
+                    <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_4.png" alt="parsing_x64_pe_file_4" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
