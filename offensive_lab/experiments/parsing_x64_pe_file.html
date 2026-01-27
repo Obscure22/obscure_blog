@@ -88,6 +88,9 @@
                     for verification. This signature is composed of the two bytes <span id="inline-code">0x50</span> and <span id="inline-code">0x45</span>, which correspond to the characters 
                     <span id="inline-code">PE</span>. An important detail to note is that this signature is defined as a <span id="inline-code">DWORD</span> and is therefore represented by four bytes: 
                     <span id="inline-code">0x50450000</span>.
+                    <br>
+                    The 32-bit and 64-bit versions are very similar. The only difference is the <span id="inline-code">OptionalHeader</span> data structure, which is defined as 
+                    <span id="inline-code">IMAGE_OPTIONAL_HEADER32</span> for 32-bit binaries and <span id="inline-code">IMAGE_OPTIONAL_HEADER64</span> for 64-bit binaries.
                 </p>
         </section>
     </section>
