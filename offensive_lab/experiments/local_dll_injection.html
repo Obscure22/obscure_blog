@@ -66,6 +66,21 @@
 
                     <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_4.png" alt="local_dll_injection_4" onclick="window.open(this.src, '_blank');">
                 </p>
+            <h2>Analysis</h2>
+                <p>
+                    For investigation, the first step consists of opening <strong>Process Hacker</strong> to inspect the running process and verify that the DLL has been successfully loaded into 
+                    its address space. Opening the "Modules" tab, the DLL's name should appear in the list of modules.
+
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_5.png" alt="local_dll_injection_5" onclick="window.open(this.src, '_blank');">
+
+                    By analyzing the assembly code using <strong>IDA</strong>, it is possible to observe the program’s behavior at a low-level. No data is encrypted, which makes it possible to clearly see the DLL path 
+                    in plaintext. As shown in the figure below, the DLL path is stored on the stack in <span id="inline-code">lpLibFileName</span>. The program then calls the 
+                    <span id="inline-code">LoadLibraryA</span> function, passing this DLL path as input, which results in the DLL being loaded into the address space of the process.
+                    <br>
+                    If <span id="inline-code">LoadLibraryA</span> executes successfully, the program jumps to the right branch and prints "[+] Done!".
+
+                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_6.png" alt="local_dll_injection_6" onclick="window.open(this.src, '_blank');">
+                </p>
         </section>
     </section>
 
