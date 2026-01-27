@@ -83,7 +83,11 @@
                 </p>
             <h2>NT Header (IMAGE_NT_HEADERS)</h2>
                 <p>
-                    
+                    The NT header, also referred to as the PE header, is essential because it incorporates two other image headers: the <span id="inline-code">FileHeader</span> and
+                    the <span id="inline-code">OptionalHeader</span>. These headers contain a large amount of information about the PE file. The NT header also contains a signature used 
+                    for verification. This signature is composed of the two bytes <span id="inline-code">0x50</span> and <span id="inline-code">0x45</span>, which correspond to the characters 
+                    <span id="inline-code">PE</span>. An important detail to note is that this signature is defined as a <span id="inline-code">DWORD</span> and is therefore represented by four bytes: 
+                    <span id="inline-code">0x50450000</span>.
                 </p>
         </section>
     </section>
