@@ -56,7 +56,9 @@
                 <p>
                     The first two bytes of the file specifically, the first two bytes of the DOS header, are generally <span id="inline-code">0x4D</span> and <span id="inline-code">0x5A</span>, 
                     which correspond to the characters <span id="inline-code">MZ</span>. These bytes identifies the file as a valid executable and they are called 
-                    <span id="inline-code">Magic number</span>.
+                    <span id="inline-code">Magic number</span>. The DOS header is a data structure which contains several data items. The most important are: <span id="inline-code">e_magic</span>
+                    which is the Magic number and <span id="inline-code">e_lfanew</span> which is a 4-byte value that gives the offset to the start of the NT Header. 
+                    The <span id="inline-code">e_lfanew</span> field is always found at offset <span id="inline-code">0x3C</span>.
                 </p>
         </section>
     </section>
