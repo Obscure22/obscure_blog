@@ -91,6 +91,19 @@
                     <br>
                     The 32-bit and 64-bit versions are very similar. The only difference is the <span id="inline-code">OptionalHeader</span> data structure, which is defined as 
                     <span id="inline-code">IMAGE_OPTIONAL_HEADER32</span> for 32-bit binaries and <span id="inline-code">IMAGE_OPTIONAL_HEADER64</span> for 64-bit binaries.
+                    <br>
+                    The C code snippet below shows how the <span id="inline-code">e_lfanew</span> field is used to point to the next header in the file structure, which is the NT header. 
+                    The address of the NT header is then stored using the <span id="inline-code">pImgNtHdr</span> pointer. Using this pointer, the program prints the NT header signature.
+
+                    <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_6.png" alt="parsing_x64_pe_file_6" onclick="window.open(this.src, '_blank');">
+
+                    By executing the program, the correct file signature can be observed.
+
+                    <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_7.png" alt="parsing_x64_pe_file_7" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h2>File Header (IMAGE_FILE_HEADER)</h2>
+                <p>
+                    
                 </p>
         </section>
     </section>
