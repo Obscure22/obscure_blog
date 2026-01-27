@@ -195,17 +195,7 @@ body {
   height: auto;
   cursor: zoom-in;
   display: block;
-  transition: all 0.3s ease;
   margin: 20px auto;
-}
-
-.post-image.zoomed {
-  max-width: none;      
-  width: auto;
-  height: auto;
-  display: block;
-  margin: 20px auto;  
-  cursor: zoom-out;
 }
 
 /* ========== Footer ========== */
