@@ -46,12 +46,16 @@
             </p>
         </section>
         <section>
-            <h2>Analysis</h2>
+            <h2>PE Structure</h2>
                 <p>
+                    The figure below shows the structure of a Portable Executable.
                     
-                    <!-- <span id="inline-code">LoadLibraryA</span>
-
-                    <img class="post-image" src="../../img/local_dll_injection/local_dll_injection_6.png" alt="local_dll_injection_6" onclick="window.open(this.src, '_blank');"> -->
+                    <img class="post-image" src="../../img/local_dll_injection/parsing_x64_pe_file_1.png" alt="parsing_x64_pe_file_1" onclick="window.open(this.src, '_blank');"> -->
+                </p>
+            <h2>DOS Header (IMAGE_DOS_HEADER)</h2>
+                <p>
+                    The first two bytes of the file specifically, the first two bytes of the DOS header, are generally <span id="inline-code">0x4D</span> and <span id="inline-code">0x5A</span>, 
+                    which correspond to the characters <span id="inline-code">MZ</span>. This signature identifies the file as a valid executable.
                 </p>
         </section>
     </section>
