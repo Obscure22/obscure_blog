@@ -48,13 +48,13 @@
                     The first and most straightforward step is to execute the program. It immediately prompts the user to enter a password. Since the correct password is not yet known, a test 
                     value such as <strong>test</strong> can be provided, which results in the expected outcome: the password is incorrect.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_1.png" alt="0x41haz_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_1.png" alt="0x41haz_1">
 
                     Opening the binary in <strong>IDA</strong> shows the initial code at the program entry point, as illustrated in the figure below. From this, it is possible to observe that the 
                     execution has not yet reached the main function. The address of main is later loaded into the <span id="inline-code">rdi</span> register, and a call instruction is executed 
                     to transfer control to the program’s main function.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_2.png" alt="0x41haz_2" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_2.png" alt="0x41haz_2">
 
                     The figure below shows the main function. One of the first things to notice is that some hexadecimal values are pushed onto the stack. The program then calls multiple 
                     <span id="inline-code">puts</span> functions, one of which prompts the user to enter a password.
@@ -63,24 +63,24 @@
                     The function <span id="inline-code">strlen</span> is then called to compute the length of the input string. This length is compared with the value <span id="inline-code">0x0D</span>
                     (13). If the result of the comparison is not zero, meaning the string is not exactly 13 characters long, the execution follows the left branch and the program terminates.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_3.png" alt="0x41haz_3" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_3.png" alt="0x41haz_3">
 
                     In this way, it is possible to determine that the password must be 13 characters long. In fact, if the program is executed and, for example, 13 'A' characters are provided as 
                     input, a different output is produced. This indicates that the execution has followed the right branch of the program.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_4.png" alt="0x41haz_4" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_4.png" alt="0x41haz_4">
 
                     In the right branch, shown in the figure below, there is a loop. The loop counter is <span id="inline-code">var_4</span>, and the loop runs 13 times, which corresponds to the 
                     length of the input string stored in <span id="inline-code">var_8</span>.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_5.png" alt="0x41haz_5" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_5.png" alt="0x41haz_5">
 
                     The important part is shown in the figure below, which corresponds to the body of the loop. In this block, a byte from <span id="inline-code">var_16</span> is loaded into 
                     <span id="inline-code">edx</span> and compared with a byte from the input string <span id="inline-code">s</span>, which is stored in <span id="inline-code">eax</span>. 
                     If the comparison succeeds, the loop counter (<span id="inline-code">var_4</span>) is incremented by 1 and the loop continues. At the next iteration, the comparison 
                     is performed again on the subsequent bytes of <span id="inline-code">var_16</span> and <span id="inline-code">s</span> and so on until the end of the string is reached.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_6.png" alt="0x41haz_6" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_6.png" alt="0x41haz_6">
 
                     This analysis shows that the string to be matched is stored, or more precisely referenced, by <span id="inline-code">var_16</span>. As observed at the beginning of the program, 
                     several values are written to memory and later accessed through this pointer. These values are <span id="inline-code">0x6667243532404032</span>, 
@@ -90,15 +90,16 @@
                     as shown in the figure below. It is important to note that these values are stored in little-endian format, meaning that the byte order must be reversed before performing the 
                     ASCII conversion.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_7.png" alt="0x41haz_7" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_7.png" alt="0x41haz_7">
 
                     By executing the program again and entering the string that was just recovered, the challenge is successfully solved.
 
-                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_8.png" alt="0x41haz_8" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../../img/re_0x41haz/0x41haz_8.png" alt="0x41haz_8">
                 </p>
         </section>
     </section>
 
     <script src="../../js/reading-time.js"></script>
+    <script src="../../js/image-zoom.js"></script>
 </body>
 </html>
