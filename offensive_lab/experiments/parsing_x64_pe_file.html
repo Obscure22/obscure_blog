@@ -149,9 +149,14 @@
                 <p>
                     The Section Header provides information about the PE sections. Each PE section contains executable code, data, or resource information and it is 
                     associated with an <span id="inline-code">IMAGE_SECTION_HEADER</span> structure which stores important details about the section. The most important PE sections 
-                    are listed below:
-                    
+                    are listed below:  
                 </p>
+                <ul>
+                    <li><span id="inline-code">.text</span> which contains the executable code which is the written code.</li>
+                    <li><span id="inline-code">.data</span> which contains initialized data which are variables initialized in the code..</li>
+                    <li><span id="inline-code">.rdata</span> which contains read-only data..</li>
+                    <li><span id="inline-code">.idata</span> which contains the import tables.</li>
+                </ul>
         </section>
     </section>
 
