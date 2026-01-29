@@ -176,7 +176,7 @@
                 <p>
                     This section presents the implementation of a custom routine for parsing the Import Table of a PE file in order to extract and display the imported DLLs and functions.
                     The executable files rely on imported DLLs to perform a wide range of operations, such as file handling, memory management, process creation, and network communication.
-                    <br>
+                    <br><br>
                     First, it is necessary to locate the RVA of the Data Directory. Before proceeding, an example is presented to clarify the process. As shown in the figure below, by 
                     opening <span id="inline-code">notepad.exe</span> with <strong>CFF Explorer</strong>, it is possible to inspect the Data Directory under the Optional Header. 
                     From this view, it can be observed that the Import Table is located at the RVA <span id="inline-code">0x2D0C8</span>, which falls within the <span id="inline-code">.rdata</span>
@@ -193,6 +193,42 @@
                     section.
 
                     <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_18.png" alt="parsing_x64_pe_file_18" onclick="window.open(this.src, '_blank');">
+
+                    We can perform this same check in the section header loop seen before to determine the location of the Import Directory, as shown in the figure below. 
+                    Once identified, the address is stored in the variable <span id="inline-code">importSection</span>. Obviously, <span id="inline-code">importDirectoryRVA</span> 
+                    is the RVA of the import table.
+
+                    <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_19.png" alt="parsing_x64_pe_file_19" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3>PIMAGE_IMPORT_DESCRIPTOR</h3>
+                <p>
+                    To get the names of the DLLs imported by this binary, we first create a <span id="inline-code">PIMAGE_IMPORT_DESCRIPTOR</span> structure and fill it with the 
+                    necessary data from the executable.
+                    <br><br>
+                    An important thing to do is to translate the <span id="inline-code">importDirectoryRVA</span> to the <strong>file offset</strong> (raw address) which points to the location in 
+                    the binary where the DLL import information is stored. This can be done using the following formula:
+                    <br><br>
+                    <span id="inline-code">offset = imageBase + rdata.RawOffset + (importDirectory.RVA − rdata.VA)</span>
+                    <br><br>
+                    where <span id="inline-code">imageBase</span> is the start address where the binary is loaded, <span id="inline-code">rdata.RawOffset</span> is the raw address of the 
+                    <span id="inline-code">.rdata</span> section, <span id="inline-code">importDirectory.RVA</span> is the Relative Virtual Address of the Data Directory in the Optional Header and 
+                    <span id="inline-code">rdata.VA</span> is the Virtual Address of the <span id="inline-code">.rdata</span> section. <strong>NOTE 1:</strong> the operation 
+                    <span id="inline-code">RVA - VA</span> is used because to retrieve the RVA what we have to do is <span id="inline-code">VA - Base Image = RVA</span>. <strong>NOTE 2:</strong> in 
+                    the formula, <span id="inline-code">.rdata</span> is used as an example from <span id="inline-code">notepad.exe</span>. In other cases, the Data Directory could reside in a 
+                    different section, such as <span id="inline-code">.text</span>.
+                    <br>
+                    In exactly the same way, the formula can be adapted in our scenario to obtain the Pointer to Raw Address of the Import Table (<span id="inline-code">pImgImportDescriptor</span>), 
+                    as shown in the code snippet below.
+
+                    <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_20.png" alt="parsing_x64_pe_file_20" onclick="window.open(this.src, '_blank');">
+
+                    After retrieving this raw address, a <span id="inline-code">for</span> loop is used to display the names of the DLLs imported from the executable, as illustrated in the code below.
+
+                    <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_21.png" alt="parsing_x64_pe_file_21" onclick="window.open(this.src, '_blank');">
+
+                    The figure below shows the output listing the names of the DLLs imported by the executable.
+
+                    <img class="post-image" src="../../img/parsing_x64_pe_file/parsing_x64_pe_file_22.png" alt="parsing_x64_pe_file_22" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
