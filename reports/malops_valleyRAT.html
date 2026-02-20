@@ -49,7 +49,16 @@
         <section>
             <h2>Static Analysis</h2>
             <h3><strong>Q1)</strong> What is the entry point address of the sample?</h3>
-            
+                <p>
+                    Opening the sample with CFF Explorer, we can observe that it is a 64-bit compiled executable by inspecting the PE headers.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_1.png" alt="icedID_1" onclick="window.open(this.src, '_blank');">
+                    
+                    Additionally, by navigating to the Optional Header, we can see that the Address of Entry Point is <span id="inline-code">0x5E540</span>. This value represents an offset relative to the 
+                    program’s Image Base, which is <span id="inline-code">0x400000</span>. Therefore, the actual virtual address of the entry point is <span id="inline-code">0x45E540</span>.
+                    
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_2.png" alt="icedID_1" onclick="window.open(this.src, '_blank');">
+                </p>
         </section>
     </section>
 
