@@ -50,14 +50,22 @@
             <h2>Static Analysis</h2>
             <h3><strong>Q1)</strong> What is the entry point address of the sample?</h3>
                 <p>
-                    Opening the sample with CFF Explorer, we can observe that it is a 64-bit compiled executable by inspecting the PE headers.
+                    Opening the sample with <strong>CFF Explorer</strong>, we can observe that it is a 64-bit compiled executable by inspecting the PE headers.
 
-                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_1.png" alt="icedID_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_1.png" alt="malops_valleyRAT_1" onclick="window.open(this.src, '_blank');">
                     
                     Additionally, by navigating to the Optional Header, we can see that the Address of Entry Point is <span id="inline-code">0x5E540</span>. This value represents an offset relative to the 
                     program’s Image Base, which is <span id="inline-code">0x400000</span>. Therefore, the actual virtual address of the entry point is <span id="inline-code">0x45E540</span>.
                     
-                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_2.png" alt="icedID_1" onclick="window.open(this.src, '_blank');">
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_2.png" alt="malops_valleyRAT_2" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q2)</strong> The sample is written in a two-letter programming language. Which one?</h3>
+                <p>
+                    In the sections table, we can observe that, in addition to the standard PE sections, there is also a non-standard section called <span id="inline-code">.symtab</span>.
+                    The presence of a non-standard section does not necessarily indicate that the binary is packed. In some cases, extra sections are added when a different programming language toolchain is used to 
+                    compile the file, for example when the executable is compiled with <strong>Go</strong> or <strong>RUST</strong>, which often introduces additional metadata sections into the final binary.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_3.png" alt="malops_valleyRAT_3" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
