@@ -74,6 +74,18 @@
                     This shows that the sample was written in <strong>Go</strong>, version 1.20.1.
                 </p>
             <h3><strong>Q3)</strong> When executed, the malware creates persistence using a Run key. Which Run key path is used?</h3>
+                <p>
+                    By opening the sample in <strong>IDA</strong>, we can look at the function names table and notice some system calls related to opening and modifying Windows registry keys.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_5.png" alt="malops_valleyRAT_5" onclick="window.open(this.src, '_blank');">
+                    
+                    By clicking on each of these system calls and checking the cross-references, it is possible to identify the routine <span id="inline-code">sub_47B940</span>. Inside this function, 
+                    there is a system call used to open a registry key, which is <span id="inline-code">internal_syscall_windows_registry_OpenKey</span>, and one of its parameters clearly contains the registry path, 
+                    which is: <span id="inline-code">Software\Microsoft\Windows\CurrentVersion\Run</span>.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_6.png" alt="malops_valleyRAT_6" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q4)</strong> What is the registry value name used for persistence?</h3>
         </section>
     </section>
 
