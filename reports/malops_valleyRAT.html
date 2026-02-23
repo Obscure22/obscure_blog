@@ -86,6 +86,12 @@
                     <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_6.png" alt="malops_valleyRAT_6" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3><strong>Q4)</strong> What is the registry value name used for persistence?</h3>
+                <p>
+                    After that, the malware performs the system call <span id="inline-code">internal_syscall_windows_registry_key_setStringValue</span>, and the parameter passed to the call is 
+                    <span id="inline-code">CalculatorApp_AutoStart</span>. This allows the malware to achieve persistence, so it can continue running even after the system is rebooted.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_7.png" alt="malops_valleyRAT_7" onclick="window.open(this.src, '_blank');">
+                </p>
         </section>
     </section>
 
