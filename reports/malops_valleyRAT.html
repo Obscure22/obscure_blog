@@ -108,6 +108,19 @@
                     <span id="inline-code">0x10</span>, indicating that the key length is 16 bytes. This confirms that the algorithm used is AES-128.
 
                     <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_9.png" alt="malops_valleyRAT_9" onclick="window.open(this.src, '_blank');">
+
+                    By analyzing the pseudocode, it is possible to observe that the encrypted data, with a size of <span id="inline-code">0x25660</span> bytes, is copied into memory. This data is stored in the 
+                    <span id="inline-code">.rdata</span> section at address <span id="inline-code">0x4B4FA8</span>.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_10.png" alt="malops_valleyRAT_10" onclick="window.open(this.src, '_blank');">
+
+                    The code snippet below shown a portion of the encrypted payload located in <span id="inline-code">.rdata</span> section.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_11.png" alt="malops_valleyRAT_11" onclick="window.open(this.src, '_blank');">
+
+                    By using <strong>CyberChef</strong>, it is possible to apply the parameters identified earlier and decrypt the shellcode.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_12.png" alt="malops_valleyRAT_12" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
