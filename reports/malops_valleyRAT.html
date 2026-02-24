@@ -99,6 +99,16 @@
 
                     <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_8.png" alt="malops_valleyRAT_8" onclick="window.open(this.src, '_blank');">
                 </p>
+            <h3><strong>Q6)</strong> What is the decryption key used for unpacking the second stage?</h3>
+            <h3><strong>Q7)</strong> How many bytes does the decrypted second-stage payload contain?</h3>
+                <p>
+                    By searching for the AES-related functions in the code and then following the cross-references backwards, it is possible to locate the code snippet shown below.
+                    The function <span id="inline-code">sub_47BAC0</span> is responsible for the AES encryption. It takes as input the value <span id="inline-code">0x25660</span> (<strong>153184</strong>), stored in 
+                    <span id="inline-code">ebx</span>, which represents the size in byte of the input data, the value <span id="inline-code">1ws12uuu11j*p5fr</span>, which corresponds to the encryption key, and the value 
+                    <span id="inline-code">0x10</span>, indicating that the key length is 16 bytes. This confirms that the algorithm used is AES-128.
+
+                    <img class="post-image" src="../img/malops_valleyRAT/malops_valleyRAT_9.png" alt="malops_valleyRAT_9" onclick="window.open(this.src, '_blank');">
+                </p>
         </section>
     </section>
 
