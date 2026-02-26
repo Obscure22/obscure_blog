@@ -1,1 +1,88 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Obscure RE and MA Dojo</title>
+    
+    <!-- link to fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- link to css file -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <a href="/obscure_blog" class="logo">Obscure<span class="cursor">_</span></a>
+          <ul class="nav-links">
+              <li><a href="/obscure_blog">Dojo</a></li>
+              <li><a href="../offensive_lab/off_lab.html">Offensive Lab</a></li>
+              <li><a href="../ctf_reversing/re.html">CTF Reverse Engineering</a></li>
+          </ul>
+    </nav>
+    <section class="container">
+        <section class="container-title">
+            <h1>Analyzing RokRat Loader - Malops</h1>
+            <div class="post__bottom">
+                <div class="post__author">
+                    <a href="#" aria-label="ObscureRe">
+                        <img class="post__author-image" src="../img/logo.png"
+                            alt="Obscure's Picture">
+                    </a>
+                </div>
+                <span>
+                    Obscure_ &nbsp;·&nbsp; <span id="reading-time"></span>
+                </span>
+            </div>
+        </section>
+        <section>
+            <h2>Introduction</h2>
+            <p>
+                In this post, I will examine the sample provided in the <strong>Malops</strong> website. We will attempt to answer the questions from the challenge by analyzing the sample itself, 
+                performing a thorough malware analysis to better understand its behavior and characteristics.
+                <br>
+                The scenario is the following: Our Threat Hunting team has detected suspicious network traffic originating from the workstation of a senior research scientist at DefenseTech Industries, 
+                a contractor developing next-generation missile defense systems. The suspicious traffic appears to be communicating with command and control C2 servers previously associated with the advanced 
+                persistent threat group known as Lazarus. Initial investigation reveals that the researcher recently received what appeared to be a legitimate job application email with a PDF attachment. 
+                Upon opening the attachment, a sophisticated loader was executed, which decrypted and deployed a variant of the RokRat remote access trojan. Our Incident Response team has extracted the 
+                shellcode loader component from the infected system for analysis.
+            </p>
+        </section>
+        <section>
+            <h2>Analysis</h2>
+            <h3><strong>Q1)</strong> What is the MD5 hash of the binary?</h3>
+                <p>
+                    Opening the sample with <strong>CFF Explorer</strong>, we can observe that the executable is compiled for a 32-bit architecture. Additionally, the associated MD5 hash of the file can be 
+                    retrieved directly from the tool, which is the following: <span id="inline-code">CF28EF5CEDA2AA7D7C149864723E5890</span>.
 
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_1.png" alt="malops_RokRat_Loader_1" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q2)</strong> What is the entry point address of the binary in hex?</h3>
+                <p>
+                    By inspecting the Optional Header, the Image Base can be identified as <span id="inline-code">0x400000</span>, which represents the preferred virtual address where the executable is loaded 
+                    in memory by the Windows loader. The original entry point is <span id="inline-code">0x1000</span>, which is an offset relative to the Image Base. Therefore, the actual virtual address of 
+                    the entry point is <span id="inline-code">0x401000</span> (Image Base + OEP). Additionally, the entry point resides within the first section which is <span id="inline-code">.text</span> section.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_2.png" alt="malops_RokRat_Loader_2" onclick="window.open(this.src, '_blank');">
+
+                    By inspecting the section table, it is possible to observe that the binary contains only two sections. In particular, one of them is a non-standard section named <span id="inline-code">Silvana</span>. 
+                    Unlike the typical PE sections, custom section names can sometimes suggest that the executable has been packed, modified, or produced with a specific toolchain.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_3.png" alt="malops_RokRat_Loader_3" onclick="window.open(this.src, '_blank');">
+
+                    Moving to PE analysis with PE Studio and inspecting the Imports table, it is possible to notice that the executable imports very few functions, specifically 
+                    <span id="inline-code">LoadLibraryA</span> and <span id="inline-code">WSAStartup</span>. The last one belongs to the Windows Sockets (<span id="inline-code">WinSock</span>) library. 
+                    <span id="inline-code">WSAStartup</span> is used to initialize the networking subsystem and must be called before any other socket-related APIs such as 
+                    <span id="inline-code">send</span>, <span id="inline-code">recv</span>, <span id="inline-code">connect</span> and so on. In practice, any program that performs network communication on 
+                    Windows typically invokes <span id="inline-code">WSAStartup</span> first to set up the socket environment. The <span id="inline-code">LoadLibraryA</span> is used to load at runtime the 
+                    all other libraries.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_4.png" alt="malops_RokRat_Loader_4" onclick="window.open(this.src, '_blank');">
+                </p>
+        </section>
+    </section>
+
+    <script src="../js/reading-time.js"></script>
+</body>
+</html>
