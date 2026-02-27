@@ -184,6 +184,37 @@
                     To answer this question, there are two possible approaches: one is very simple and straightforward, while the other is slightly more detailed but extremely useful for understanding the 
                     structure of a PE file and how it works in Windows. I have already written a guide on the analysis of a 64-bit PE file in Offensive Lab, so I will not go too deep here into the internal 
                     structure of the PE format. Instead, I will focus only on the parts that are strictly necessary for this specific analysis.
+                    <br><br>
+                    Let’s start with the second method. We can open the sample again using <strong>CFF Explorer</strong>. Inside the tool, we can inspect the main PE structures: the 
+                    <strong>DOS Header</strong>, the <strong>NT Header</strong>, the <strong>File Header</strong>, the <strong>Optional Header</strong>, and the <strong>Data Directory</strong>. We know that the 
+                    Data Directory is an array of 16 entries located inside the Optional Header, which in turn is part of the NT Header. The element at index 0, <span id="inline-code">DataDirectory[0]</span>, 
+                    corresponds to the Export Directory. Each entry in the Data Directory has a size of 8 bytes: 4 bytes for the <span id="inline-code">VirtualAddress</span> 4 bytes for the 
+                    <span id="inline-code">Size</span>.
+                    <br><br>
+                    It can be observed that the NT Header starts at offset <span id="inline-code">0xE0</span> in the file. Inside there is the value of the signature with size <span id="inline-code">0x4</span> bytes.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_18.png" alt="malops_RokRat_Loader_18" onclick="window.open(this.src, '_blank');">
+
+                    After that, there is the File Header, which has a size of <span id="inline-code">0x14</span> (<strong>20</strong>) bytes.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_19.png" alt="malops_RokRat_Loader_19" onclick="window.open(this.src, '_blank');">
+
+                    Next, there is the Optional Header, which has a size of <span id="inline-code">0x60</span> bytes for PE32 files.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_20.png" alt="malops_RokRat_Loader_20" onclick="window.open(this.src, '_blank');">
+
+                    Finally, there is the first entry of the Data Directory, which contains the Virtual Address of the Export Directory. By summing all the previously identified offsets the resulting value is 
+                    <span id="inline-code">0x78</span>.
+
+                    The other method is much simpler. It consists of directly taking the virtual address of the first Data Directory entry that is, the virtual address of the Export Directory, which is 
+                    <span id="inline-code">0x400158</span> and subtracting the virtual address of the NT Header, which is <span id="inline-code">0x4000E0</span>. The result is <span id="inline-code">0x78</span>.
+                    The figure below shows the virtual address of the Export Directory.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_21.png" alt="malops_RokRat_Loader_21" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q9)</strong> How many API functions are resolved using hashing in the entire binary?</h3>
+                <p>
+                    
                 </p>
         </section>
     </section>
