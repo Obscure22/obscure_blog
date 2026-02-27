@@ -222,7 +222,23 @@
                 </p>
             <h3><strong>Q10)</strong> How many bytes of headers are skipped to reach the start of the decrypted data?</h3>
                 <p>
-                    
+                    Going back to <span id="inline-code">sub_401134</span>, initially ECX contains the address of the entire shellcode, including the key <span id="inline-code">0x29</span>. 
+                    The function first moves the value <span id="inline-code">0x29</span> into <span id="inline-code">bl</span>, which will be used as the XOR key for the decryption. Then, it executes the 
+                    instruction <span id="inline-code">add ecx, 5</span>, meaning that 5 is added to <span id="inline-code">ecx</span>, which originally points to the first byte of the encrypted shellcode.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_22.png" alt="malops_RokRat_Loader_22" onclick="window.open(this.src, '_blank');">
+
+                    After that, the updated value of <span id="inline-code">ecx</span> is moved into <span id="inline-code">eax</span>, and <span id="inline-code">eax</span> is then used as the pointer 
+                    during the decryption loop. 
+                    <br>
+                    As shown in the image below, <span id="inline-code">eax</span> contains the value <span id="inline-code">0x401490</span>, which corresponds to the first byte 
+                    (<span id="inline-code">0x29</span>) of the subsequent sequence of bytes.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_23.png" alt="malops_RokRat_Loader_23" onclick="window.open(this.src, '_blank');">
+
+                    Finally, we can observe that after the entire shellcode has been decrypted, the value <span id="inline-code">0x4D5A</span> (MZ) appears 5 bytes after the beginning of the original encrypted shellcode.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_24.png" alt="malops_RokRat_Loader_24" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
