@@ -138,6 +138,28 @@
                 </p>
             <h3><strong>Q4)</strong> What is the memory protection constant used when allocating memory for the payload in hex?</h3>
             <h3><strong>Q5)</strong> What is the hash value used to find the VirtualAlloc function in hex?</h3>
+                <p>
+                    By bypassing the error, for example by manually modifying the <span id="inline-code">eip</span> register during debugging, it is possible to reach <span id="inline-code">sub_4012C2</span>. 
+                    Inside this function, multiple calls to <span id="inline-code">sub_401041</span> can be observed, which, as previously discussed, is responsible to reconstruct the addresses of 
+                    required APIs at runtime.
+                    <br><br>
+                    It is important to note that the function uses several constant values, for example <span id="inline-code">0xAA7ADB76</span> in the first block. This value is later used to reconstruct 
+                    the correct API address. We can also see that after every call to <span id="inline-code">sub_401041</span>, there is always a <span id="inline-code">call eax</span> instruction. This means 
+                    that the sample first decrypts the API and then immediately calls it using the address stored in <span id="inline-code">eax</span>.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_14.png" alt="malops_RokRat_Loader_14" onclick="window.open(this.src, '_blank');">
+
+                    By performing debugging and moving execution right after the call to <span id="inline-code">sub_401041</span>, it is possible to observe that <span id="inline-code">eax</span> contains the 
+                    address of the Windows API <span id="inline-code">VirtualAlloc</span>. Furthermore, <span id="inline-code">VirtualAlloc</span> takes four parameters, which correspond exactly to the 
+                    four push instructions that are passed before the call to <span id="inline-code">sub_401041</span>.
+                    <br>
+                    In practice, this routine converts the hash value <span id="inline-code">0xAA7ADB76</span> into the corresponding API name, using the custom hashing function, and then uses the previously 
+                    pushed values as input parameters for the decrypted function. Therefore, it can be concluded that the value <span id="inline-code">0x40</span> corresponds to the <span id="inline-code">flProtect</span> 
+                    parameter, and the associated memory protection is <span id="inline-code">PAGE_EXECUTE_READWRITE</span>.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_15.png" alt="malops_RokRat_Loader_15" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q6)</strong> How many bits does the DLL name hash algorithm rotate right (ROR) by in hex?</h3>
         </section>
     </section>
 
