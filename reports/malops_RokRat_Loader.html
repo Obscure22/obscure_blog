@@ -160,6 +160,15 @@
                     <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_15.png" alt="malops_RokRat_Loader_15" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3><strong>Q6)</strong> How many bits does the DLL name hash algorithm rotate right (ROR) by in hex?</h3>
+                <p>
+                    By navigating into <span id="inline-code">sub_401041</span>, which is the function responsible for decrypting and resolving APIs at runtime, it is possible to observe the following 
+                    block of code, as shown in the figure below. This code represents the core logic used to reconstruct the correct API address starting from its hashed value.
+                    It is possible to observe the presence of a loop, and inside this loop there is a rotate right (ROR) operation. Specifically, the bits are rotated to the right by <span id="inline-code">0xB</span> 
+                    (<strong>11</strong>) positions.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_16.png" alt="malops_RokRat_Loader_16" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q7)</strong> What value is checked to verify a valid PE header in hex?</h3>
         </section>
     </section>
 
