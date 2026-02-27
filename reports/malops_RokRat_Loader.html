@@ -214,6 +214,14 @@
                 </p>
             <h3><strong>Q9)</strong> How many API functions are resolved using hashing in the entire binary?</h3>
                 <p>
+                    By going into the function <span id="inline-code">sub_4012C2</span>, which was analyzed previously, it is possible to count how many times <span id="inline-code">sub_401041</span> is called 
+                    with a different hash parameter. Each call to <span id="inline-code">sub_401041</span> receives a distinct hash value, which is later resolved at runtime into the corresponding Windows API address.
+                    <br><br>
+                    Inside <span id="inline-code">sub_4012C2</span>, there are 5 different hash parameters, each passed to <span id="inline-code">sub_401041</span> to resolve a specific Windows API at runtime. 
+                    In addition to these five, there is one more hash parameter located outside this function, specifically in the main function. This means that the sample dynamically resolves a total of six APIs.
+                </p>
+            <h3><strong>Q10)</strong> How many bytes of headers are skipped to reach the start of the decrypted data?</h3>
+                <p>
                     
                 </p>
         </section>
