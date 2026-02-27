@@ -169,6 +169,17 @@
                     <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_16.png" alt="malops_RokRat_Loader_16" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3><strong>Q7)</strong> What value is checked to verify a valid PE header in hex?</h3>
+                <p>
+                    The value checked by the Windows loader to verify whether a file is a valid PE is stored in the <span id="inline-code">IMAGE_NT_HEADERS</span> structure. This structure can be inspected using 
+                    tools such as CFF Explorer, PE Studio, or directly inside IDA.
+                    <br><br>
+                    In IDA, we know that the Image Base is <span id="inline-code">0x400000</span>, which means the <span id="inline-code">IMAGE_NT_HEADERS</span> structure will be located shortly after this address. 
+                    In fact, it can be found at <span id="inline-code">0x4000E0</span>. Inside this structure, the first important field is the Signature, which has the value <span id="inline-code">0x4550</span> in memory.
+                    The expected PE signature is 0x5045 ("PE"), but since we are observing it in memory and the system uses little-endian format, the bytes appear reversed as <span id="inline-code">0x4550</span>.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_17.png" alt="malops_RokRat_Loader_17" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q8)</strong> What is the hexadecimal offset value used in the code to access the export directory in the PE file's Optional Header data directory?</h3>
         </section>
     </section>
 
