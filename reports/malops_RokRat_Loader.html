@@ -66,7 +66,7 @@
 
                     <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_2.png" alt="malops_RokRat_Loader_2" onclick="window.open(this.src, '_blank');">
 
-                    By inspecting the section table, it is possible to observe that the binary contains only two sections. In particular, one of them is a non-standard section named <span id="inline-code">Silvana</span>. 
+                    By inspecting the section table, it is possible to observe that the binary contains only two sections. In particular, one of them is a non-standard section named <span id="inline-code">.Silvana</span>. 
                     Unlike the typical PE sections, custom section names can sometimes suggest that the executable has been packed, modified, or produced with a specific toolchain.
 
                     <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_3.png" alt="malops_RokRat_Loader_3" onclick="window.open(this.src, '_blank');">
@@ -86,6 +86,58 @@
                     <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_5.png" alt="malops_RokRat_Loader_5" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3><strong>Q3)</strong> What XOR key is used to decrypt the embedded shellcode in hex?</h3>
+                <p>
+                    By opening the sample in <strong>IDA</strong>, the following assembly code can be observed.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_6.png" alt="malops_RokRat_Loader_6" onclick="window.open(this.src, '_blank');">
+
+                    As shown in the previous figure, the first function encountered is <span id="inline-code">sub_401041</span>. This routine performs a series of operations that are difficult to fully understand 
+                    through static analysis alone. However, it is possible to observe that the function is called with the following parameters: the value in <span id="inline-code">eax</span>, 
+                    <span id="inline-code">0x10</span> (likely representing a size in bytes), 0, and the constant <span id="inline-code">0x5BCD17DB</span>. These arguments suggest that the function may 
+                    be performing a transformation routine on a 16 byte buffer.
+                    <br><br>
+                    It is also possible to observe that immediately after the call to <span id="inline-code">sub_401041</span>, there is another instruction: <span id="inline-code">call eax</span>. 
+                    This indicates that the previous function decrypts the function at runtime and stores its address in the <span id="inline-code">eax</span> register. By placing a breakpoint on the 
+                    <span id="inline-code">call eax</span> instruction, it is possible to observe that the function being resolved at runtime is <span id="inline-code">RtlFillMemory</span>. 
+                    Therefore, it can be concluded that <span id="inline-code">sub_401041</span> performs a decryption routine that reconstructs the address of the APIs.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_7.png" alt="malops_RokRat_Loader_7" onclick="window.open(this.src, '_blank');">
+
+                    Subsequently, we encounter <span id="inline-code">sub_40157C</span>, shown in the figure below.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_8.png" alt="malops_RokRat_Loader_8" onclick="window.open(this.src, '_blank');">
+
+                    This function is used to make <span id="inline-code">eax</span> point to a sequence of data stored inside the <span id="inline-code">.text</span> section. This byte sequence is shown in the 
+                    figure below. It can be observed that it begins with the value <span id="inline-code">0x29</span> at address <span id="inline-code">0x40158B</span>, followed by a continuous series of bytes.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_9.png" alt="malops_RokRat_Loader_9" onclick="window.open(this.src, '_blank');">
+
+                    Inside <span id="inline-code">sub_401134</span>, a decryption operation is performed. Specifically, a XOR is applied between the byte located at the address pointed to by 
+                    <span id="inline-code">eax</span> and the value stored in <span id="inline-code">bl</span>. This operation is executed inside a loop, which continues iterating until the 
+                    <span id="inline-code">esi</span> register reaches zero.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_10.png" alt="malops_RokRat_Loader_10" onclick="window.open(this.src, '_blank');">
+
+                    By analyzing the loop dynamically, it is possible to observe that the value stored in <span id="inline-code">bl</span> is <span id="inline-code">0x29</span>, which is XORed with the byte 
+                    sequence pointed to by <span id="inline-code">eax</span> that was identified earlier. This sequence of bytes corresponds to the encrypted shellcode embedded in the binary. 
+                    This means that <span id="inline-code">0x29</span> is the key.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_11.png" alt="malops_RokRat_Loader_11" onclick="window.open(this.src, '_blank');">
+
+                    By moving the breakpoint to the next instruction, an error message appears indicating that the code is trying to write to a non-writable memory location. This behavior may occur 
+                    because the shellcode is incomplete or corrupted.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_12.png" alt="malops_RokRat_Loader_12" onclick="window.open(this.src, '_blank');">
+
+                    After the error, it is possible to observe that, for a valid memory region, the shellcode is successfully decrypted. The resulting payload is a PE executable with the sections 
+                    <span id="inline-code">.text</span>, <span id="inline-code">.rdata</span>, <span id="inline-code">.gfids</span>, <span id="inline-code">.tls</span>, <span id="inline-code">.rsrc</span>, 
+                    and <span id="inline-code">.reloc</span>. However, at a certain point in the memory dump of the decrypted executable, a sequence of repeating <span id="inline-code">0xCC</span> bytes appears 
+                    throughout the remainder of the dump. This indicates that the decrypted file is likely a decoy executable.
+
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_13.png" alt="malops_RokRat_Loader_13" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3><strong>Q4)</strong> What is the memory protection constant used when allocating memory for the payload in hex?</h3>
+            <h3><strong>Q5)</strong> What is the hash value used to find the VirtualAlloc function in hex?</h3>
         </section>
     </section>
 
