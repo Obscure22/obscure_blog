@@ -75,6 +75,10 @@
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_3.png" alt="customSample_Challenge_3" onclick="window.open(this.src, '_blank');">
 
+                    In fact, in the Resources section we can see a resource called <span id="inline-code">rcdata</span>. Looking at the first 32 bytes, we can notice that the data appears to be obfuscated.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_3_1.png" alt="customSample_Challenge_3_1" onclick="window.open(this.src, '_blank');">
+
                     In the Libraries section, there is only one library imported: <span id="inline-code">kernel32.dll</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_4.png" alt="customSample_Challenge_4" onclick="window.open(this.src, '_blank');">
@@ -83,7 +87,12 @@
                     <span id="inline-code">GetProcAddress</span> are used to load other libraries and resolve functions at runtime.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_5.png" alt="customSample_Challenge_5" onclick="window.open(this.src, '_blank');">
+
+                    Also in the Strings section there are many unusual strings, which suggests that some form of encryption or obfuscation is being used.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_6.png" alt="customSample_Challenge_6" onclick="window.open(this.src, '_blank');">
                 </p>
+            <h3>Static Analysis with IDA</h3>
         </section>
     </section>
 
