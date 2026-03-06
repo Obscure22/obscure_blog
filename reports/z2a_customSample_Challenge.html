@@ -93,6 +93,15 @@
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_6.png" alt="customSample_Challenge_6" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3>Static Analysis with IDA</h3>
+                <p>
+                    Opening the sample in <strong>IDA</strong> redirects us to the main function, which appears as shown in the figure below. It can be observed that there are multiple calls to 
+                    <span id="inline-code">sub_D41300</span>, each receiving obfuscated strings as input. These strings are then passed as arguments to <span id="inline-code">LoadLibraryA</span> and 
+                    <span id="inline-code">GetProcAddress</span>.
+                    <br><br>
+                    This indicates that the obfuscated strings correspond to the library name and the function name associated with that library, respectively, which are resolved at runtime.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_7.png" alt="customSample_Challenge_7" onclick="window.open(this.src, '_blank');">
+                </p>
         </section>
     </section>
 
