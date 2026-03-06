@@ -106,9 +106,24 @@
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_8.png" alt="customSample_Challenge_8" onclick="window.open(this.src, '_blank');">
                     
-                    The figure below shows the function <span id="inline-code">sub_D41300</span>. Let's try to understand how this function works to decrypt the strings.
+                    The figure below shows the function <span id="inline-code">sub_D41300</span>. Let's try to understand how this function works to decrypt the strings. It can be observed that the code 
+                    first checks whether the input string length is greater than 0. If so, an alphabet is loaded into v12, and its length is determined. Then, an if-else statement is used to select the 
+                    correct character from the alphabet, which is subsequently used to replace the corresponding character in the string being decrypted.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_9.png" alt="customSample_Challenge_9" onclick="window.open(this.src, '_blank');">
+
+                    With this information, we can write a small Python script to automatically decrypt all the obfuscated strings. The code is shown below.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_10.png" alt="customSample_Challenge_10" onclick="window.open(this.src, '_blank');">
+
+                    The image below, instead, shows the output of the Python script.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_11.png" alt="customSample_Challenge_11" onclick="window.open(this.src, '_blank');">
+
+                    It can be observed that the sample dynamically loads <span id="inline-code">kernel32.dll</span> at runtime, resolving functions such as <span id="inline-code">FindResourceA</span>, 
+                    <span id="inline-code">LoadResource</span>, <span id="inline-code">SizeofResource</span>, and <span id="inline-code">LockResource</span>. This behavior could have been anticipated, as 
+                    we previously noticed in PE Studio that the Resources section contains unusual data. These functions are specifically used to extract and access such resource data, which may 
+                    indicate the presence of a second-stage payload embedded within the resources.
                 </p>
         </section>
     </section>
