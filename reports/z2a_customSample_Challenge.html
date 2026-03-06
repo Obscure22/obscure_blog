@@ -57,6 +57,24 @@
         </section>
         <section>
             <h2>Static Analysis</h2>
+                <p>
+                    Opening the sample with <strong>PE Studio</strong> allows us to obtain several useful pieces of information about the binary. 
+                    The first things that can be noticed are that the file is compiled as a 32-bit executable and that it has a high entropy value (<strong>7.434</strong>). This high entropy may indicate that parts of the 
+                    file are packed or encrypted.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_1.png" alt="customSample_Challenge_1" onclick="window.open(this.src, '_blank');">
+
+                    By looking at the Optional Header, it is possible to see that the Image Base is located at <span id="inline-code">0x400000</span> and the Entry Point is at the offset 
+                    <span id="inline-code">0x1893</span>. The entry point is located inside the <span id="inline-code">.text</span> section.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_2.png" alt="customSample_Challenge_2" onclick="window.open(this.src, '_blank');">
+
+                    By analyzing the sections, it is possible to notice that the <span id="inline-code">.text</span> section has an entropy of <strong>6.610</strong>, while the <span id="inline-code">.rsrc</span> 
+                    section has an entropy of <strong>7.994</strong>. This suggests that the <span id="inline-code">.rsrc</span> section may contain obfuscated or packed data, while the 
+                    <span id="inline-code">.text</span> section could include cryptographic operations.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_3.png" alt="customSample_Challenge_3" onclick="window.open(this.src, '_blank');">
+                </p>
             <h3>Packing Detection</h3>
             <h3>Unpacking</h3>
             <h3>Static Analysis with IDA</h3>
