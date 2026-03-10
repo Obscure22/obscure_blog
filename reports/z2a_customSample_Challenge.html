@@ -136,6 +136,22 @@
                     Now we can rename all the functions we have decrypted in order to make the code clearer and easier to understand.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_12.png" alt="customSample_Challenge_12" onclick="window.open(this.src, '_blank');">
+
+                    Going further down in the code, the following code snippet can be observed, which shows a familiar pattern. It is possible to observe a first loop that iterates 
+                    <span id="inline-code">0x100</span> (<strong>256</strong>) times, followed by a second loop that also iterates <span id="inline-code">0x100</span> times.
+                    From this, it can be inferred that the following code snippet corresponds to the initialization stage of the RC4 algorithm. The first loop initializes the substitution box (S-box) with 
+                    values ranging from <span id="inline-code">0x00</span> to <span id="inline-code">0xFF</span>. The second loop is then used for the key scheduling, swapping values inside the S-box based on 
+                    the key in order to prepare the keystream used during the encryption or decryption process.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_13.png" alt="customSample_Challenge_13" onclick="window.open(this.src, '_blank');">
+
+                    After this part of the code, the final stage of the RC4 algorithm can be observed, which is the XOR stage. A loop performs the XOR operation between the generated keystream and the input data. 
+                    This loop is iterated as many times as the length of the payload that needs to be decrypted, this information can be found in <span id="inline-code">esi</span> register beacause this register 
+                    is incremented by one at each iteration. As can be seen from the code, several operations are performed on <span id="inline-code">var_108</span>, after which the byte pointed to in the current 
+                    iteration is moved into <span id="inline-code">eax</span>. This value is then used to perform the decryption through the XOR operation. Therefore, <span id="inline-code">var_108</span> 
+                    represents the key.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_14.png" alt="customSample_Challenge_14" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
