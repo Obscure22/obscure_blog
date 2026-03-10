@@ -156,6 +156,21 @@
                     After this decryption, the malware calls the function <span id="inline-code">sub_CB1000</span>, passing <span id="inline-code">var_110</span> as an argument. It could contain the decrypted payload.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_15.png" alt="customSample_Challenge_15" onclick="window.open(this.src, '_blank');">
+
+                    Inside this function, several Windows APIs are deobfuscated, including <span id="inline-code">CreateProcessA</span>. After that, the call to <span id="inline-code">CreateProcessA</span> 
+                    (via <span id="inline-code">call eax</span>) can be observed. It is also possible to notice that the argument corresponding to <span id="inline-code">dwCreationFlags</span> is set to 
+                    <span id="inline-code">0x4</span>. This means that the process (whose handle is stored in ECX) will be created in a suspended state.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_16.png" alt="customSample_Challenge_16" onclick="window.open(this.src, '_blank');">
+
+                    The sample then call <span id="inline-code">VirtualAlloc</span> to allocate a region of memory to itself with read and write permissions. The result of the <span id="inline-code">VirtualAlloc</span> 
+                    is the base address of the memory allocated. This base address is passed as an argument to the <span id="inline-code">GetThreadContext</span> function.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_17.png" alt="customSample_Challenge_17" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_18.png" alt="customSample_Challenge_18" onclick="window.open(this.src, '_blank');">
+
+                    
                 </p>
         </section>
     </section>
