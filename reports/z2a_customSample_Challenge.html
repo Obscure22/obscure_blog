@@ -169,7 +169,24 @@
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_17.png" alt="customSample_Challenge_17" onclick="window.open(this.src, '_blank');">
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_18.png" alt="customSample_Challenge_18" onclick="window.open(this.src, '_blank');">
+                    
+                    Then the malware calls <span id="inline-code">WriteProcessMemory</span> to write something in this region of memory.
 
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_19.png" alt="customSample_Challenge_19" onclick="window.open(this.src, '_blank');">
+
+                    After executing this activity, the sample calls <span id="inline-code">VirtualAllocEx</span>, likely in order to execute the second stage through a remote process injection technique.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_20.png" alt="customSample_Challenge_20" onclick="window.open(this.src, '_blank');">
+
+                    Finally, the sample calls <span id="inline-code">SetThreadContext</span> to modify the context of the thread, and then <span id="inline-code">ResumeThread</span> to resume and execute the thread.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_21.png" alt="customSample_Challenge_21" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_22.png" alt="customSample_Challenge_22" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h2>Dynamic Analysis</h2>
+            <h3>Extracting the encrypted payload</h3>
+                <p>
                     
                 </p>
         </section>
