@@ -208,6 +208,35 @@
                     After that, in the memory dump we can see that a payload has been decrypted, which essentially corresponds to a PE executable.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_28.png" alt="customSample_Challenge_28" onclick="window.open(this.src, '_blank');">
+
+                    At the next breakpoint, the execution stops at <span id="inline-code">CreateProcessA</span>. Here it is possible to observe two important parameters: 
+                    <span id="inline-code">lpApplicationName</span>, which contains the path of the sample itself, and <span id="inline-code">dwCreationFlags</span>, which is set to <span id="inline-code">0x4</span> 
+                    (CREATE_SUSPENDED).
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_29.png" alt="customSample_Challenge_29" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_30.png" alt="customSample_Challenge_30" onclick="window.open(this.src, '_blank');">
+
+                    When the <span id="inline-code">CreateProcessA</span> has been executed, we can see this new process spawned.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_31.png" alt="customSample_Challenge_31" onclick="window.open(this.src, '_blank');">
+
+                    The next breakpoint is reached at <span id="inline-code">VirtualAllocEx</span>. Here, the malware allocates a region of memory inside the remote process.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_32.png" alt="customSample_Challenge_32" onclick="window.open(this.src, '_blank');">
+
+                    It is very interesting to observe the parameters in the stack before the execution of the function. The picture below shows the parameters passed to the function. the first is 
+                    <span id="inline-code">0x110</span> which is the process handle that received this allocation. Then the second is the desired starting address for the region of pages that the process allocate 
+                    which is <span id="inline-code">0x400000</span>. Then the third parameter is the size of the region of memory to allocate, in this case the sample allocates 
+                    <span id="inline-code">0x18000</span> bytes.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_33.png" alt="customSample_Challenge_33" onclick="window.open(this.src, '_blank');">
+
+                    By looking at the handles of the current process, it is possible to observe that the value <span id="inline-code">0x110</span> corresponds to the child process that was previously 
+                    created in a suspended state. This confirms that the malware is now interacting with that process in order to allocate memory and inject the payload into it.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_34.png" alt="customSample_Challenge_34" onclick="window.open(this.src, '_blank');">
+                    
                 </p>
         </section>
     </section>
