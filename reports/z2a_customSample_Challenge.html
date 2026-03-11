@@ -187,7 +187,14 @@
             <h2>Dynamic Analysis</h2>
             <h3>Extracting the encrypted payload</h3>
                 <p>
-                    
+                    By moving to <strong>xdbg</strong>, it is possible to set several breakpoints on the Windows APIs that were previously identified during the static analysis with IDA, such as 
+                    <span id="inline-code">VirtualAlloc</span>, <span id="inline-code">VirtualAllocEx</span>, <span id="inline-code">WriteProcessMemory</span>, and <span id="inline-code">CreateProcessA</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_23.png" alt="customSample_Challenge_23" onclick="window.open(this.src, '_blank');">
+
+                    The first breakpoint is reached at <span id="inline-code">VirtualAlloc</span>, where it is possible to observe that the sample allocates <span id="inline-code">0x15400</span> bytes of memory.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_24.png" alt="customSample_Challenge_24" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
