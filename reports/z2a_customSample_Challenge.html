@@ -185,7 +185,6 @@
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_22.png" alt="customSample_Challenge_22" onclick="window.open(this.src, '_blank');">
                 </p>
             <h2>Dynamic Analysis</h2>
-            <h3>Extracting the encrypted payload</h3>
                 <p>
                     By moving to <strong>xdbg</strong>, it is possible to set several breakpoints on the Windows APIs that were previously identified during the static analysis with IDA, such as 
                     <span id="inline-code">VirtualAlloc</span>, <span id="inline-code">VirtualAllocEx</span>, <span id="inline-code">WriteProcessMemory</span>, and <span id="inline-code">CreateProcessA</span>.
@@ -193,8 +192,22 @@
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_23.png" alt="customSample_Challenge_23" onclick="window.open(this.src, '_blank');">
 
                     The first breakpoint is reached at <span id="inline-code">VirtualAlloc</span>, where it is possible to observe that the sample allocates <span id="inline-code">0x15400</span> bytes of memory.
+                    This memory region is allocated starting at the address <span id="inline-code">0xB50000</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_24.png" alt="customSample_Challenge_24" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_25.png" alt="customSample_Challenge_25" onclick="window.open(this.src, '_blank');">
+
+                    After this, the sample performs the decryption of the payload, as previously observed in IDA, using the RC4 algorithm. The decrypted data is written into the memory region that was 
+                    previously allocated with <span id="inline-code">VirtualAlloc</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_26.png" alt="customSample_Challenge_26" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_27.png" alt="customSample_Challenge_27" onclick="window.open(this.src, '_blank');">
+
+                    After that, in the memory dump we can see that a payload has been decrypted, which essentially corresponds to a PE executable.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_28.png" alt="customSample_Challenge_28" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
