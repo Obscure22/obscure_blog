@@ -236,7 +236,22 @@
                     created in a suspended state. This confirms that the malware is now interacting with that process in order to allocate memory and inject the payload into it.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_34.png" alt="customSample_Challenge_34" onclick="window.open(this.src, '_blank');">
-                    
+
+                    The next breakpoint is reached at <span id="inline-code">WriteProcessMemory</span>. At this stage, the malware writes the decrypted payload into the memory region that was previously 
+                    allocated in the remote process using <span id="inline-code">VirtualAllocEx</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_35.png" alt="customSample_Challenge_35" onclick="window.open(this.src, '_blank');">
+
+                    As done previously, it is possible to observe some important parameters on the stack that are passed as input to <span id="inline-code">WriteProcessMemory</span>.
+                    The first parameter is the process handle, identified by the value <span id="inline-code">0x110</span>, which corresponds to the child process previously created in a suspended state.
+                    The third parameter, <span id="inline-code">0xB50000</span>, represents a pointer to the buffer that contains the malicious payload to be written into the address space of the specified process.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_36.png" alt="customSample_Challenge_36" onclick="window.open(this.src, '_blank');">
+
+                    Now that we have found the location where the second stage resides, we can simply right-click on the base address in the memory map (<span id="inline-code">0xB50000</span>), select "Follow in Memory Map", 
+                    and then extract the memory dump as a file.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_37.png" alt="customSample_Challenge_37" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
