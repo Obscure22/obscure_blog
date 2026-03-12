@@ -255,6 +255,19 @@
                 </p>
             <h2>Static Analysis - Second Stage</h2>
                 <p>
+                    Opening the dumped file in IDA, this is the graph view that we obtain.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_38.png" alt="customSample_Challenge_38" onclick="window.open(this.src, '_blank');">
+
+                    One interesting function that can be identified almost immediately is <span id="inline-code">sub_401210</span>, which in this case takes the value <span id="inline-code">0x8436F795</span> as input.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_39.png" alt="customSample_Challenge_39" onclick="window.open(this.src, '_blank');">
+                    
+                    Inside this function, there is first a call to <span id="inline-code">LoadLibrary</span>, followed by a call to <span id="inline-code">GetModuleHandle</span>. This indicates that the sample is 
+                    trying to load a function, most likely corresponding to the encrypted string passed as input. Between these two calls, there is also an interesting call to <span id="inline-code">sub_401660</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_40.png" alt="customSample_Challenge_40" onclick="window.open(this.src, '_blank');">
+
                     
                 </p>
         </section>
