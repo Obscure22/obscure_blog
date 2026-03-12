@@ -271,6 +271,25 @@
                     By analyzing this function, it is possible to notice that a sort of RC4-like decryption is performed. In fact, there is a loop that iterates <span id="inline-code">0x100</span> times.
                     
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_41.png" alt="customSample_Challenge_41" onclick="window.open(this.src, '_blank');">
+
+                    There are two possible ways to obtain the corresponding string. The first option is to perform debugging and stop at the parameter of <span id="inline-code">GetModuleHandle</span> that contains 
+                    the decrypted function name. The second option is to use an automated tool to recover the string directly. This tool was written by 0x0d4y to help malware analysts. Using the tool, we obtain that the 
+                    encrypted string corresponds to <span id="inline-code">IsDebuggerPresent</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_42.png" alt="customSample_Challenge_42" onclick="window.open(this.src, '_blank');">
+
+                    Another interesting part is the following. The sample compares <span id="inline-code">eax</span> with the value <span id="inline-code">0xB925C42D</span>, which corresponds to 
+                    <span id="inline-code">svchost.exe</span>. If the two values are not equal, the code takes the left branch; otherwise, it takes the right branch.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_43.png" alt="customSample_Challenge_43" onclick="window.open(this.src, '_blank');">    
+                </p>
+            <h3>Analyzing left branch</h3>
+                <p>
+                    By following the left branch, we encounter the function <span id="inline-code">sub_401210</span> that load <span id="inline-code">IsDebuggerPresent</span> and then it call that function.
+                </p>
+            <h3>Analyzing right branch</h3>
+                <p>
+                    
                 </p>
         </section>
     </section>
