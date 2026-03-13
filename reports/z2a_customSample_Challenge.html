@@ -336,6 +336,22 @@
                     created inside the process, which runs the function <span id="inline-code">sub_401DC0</span> within the remote process.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_51.png" alt="customSample_Challenge_51" onclick="window.open(this.src, '_blank');">
+
+                    By analyzing <span id="inline-code">sub_401DC0</span>, we can observe that several hashed strings are decrypted again, and as shown in the command prompt on the right, we can obtain the 
+                    corresponding plaintext strings. 
+                    <br><br>
+                    After that, the same operation previously observed in <span id="inline-code">sub_401CA0</span> is performed. Two encrypted strings are taken from the 
+                    <span id="inline-code">.rdata</span> section at the addresses <span id="inline-code">0x413C7C</span> and <span id="inline-code">0x413C8C</span>. These values are stored respectively in 
+                    <span id="inline-code">ebp-40h</span> and <span id="inline-code">ebp-30h</span>. Next, a loop iterates over the entire concatenated string, and two operations are applied to each byte: 
+                    first a ROL (rotate left) by 4 bits, and then an XOR with the key <span id="inline-code">0xC5</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_52.png" alt="customSample_Challenge_52" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_53.png" alt="customSample_Challenge_53" onclick="window.open(this.src, '_blank');">
+
+                    By applying the same procedure in CyberChef, we can recover the decrypted string. The result is the following URL: <span id="inline-code">https://pastebin.com/raw/mLem9DG</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_54.png" alt="customSample_Challenge_54" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3>Analyzing right branch</h3>
                 <p>
