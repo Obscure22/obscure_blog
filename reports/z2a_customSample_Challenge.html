@@ -353,6 +353,13 @@
                     By applying the same procedure in CyberChef, we can recover the decrypted string. The result is the following URL: <span id="inline-code">https://pastebin.com/raw/mLem9DG</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_54.png" alt="customSample_Challenge_54" onclick="window.open(this.src, '_blank');">
+
+                    After that, we encounter the function <span id="inline-code">sub_401290</span>, which takes the previously decrypted URL as input. Inside this function, we can observe a call to 
+                    <span id="inline-code">VirtualAlloc</span> with a protection value of <span id="inline-code">0x4</span>. Next, there is a call to <span id="inline-code">InternetOpenA</span>, where the 
+                    User-Agent string used by the function is "cruloader". After that, <span id="inline-code">InternetOpenUrlA</span> is called, which receives the previously decrypted URL as input. 
+                    Then we encounter the value <span id="inline-code">0x2B53DA6</span>, which is another hash value corresponding to the function <span id="inline-code">HttpQueryInfoA</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_55.png" alt="customSample_Challenge_55" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3>Analyzing right branch</h3>
                 <p>
