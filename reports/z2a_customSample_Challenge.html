@@ -282,9 +282,7 @@
                     <span id="inline-code">svchost.exe</span>. If the two values are not equal, the code takes the left branch; otherwise, it takes the right branch.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_43.png" alt="customSample_Challenge_43" onclick="window.open(this.src, '_blank');">    
-                </p>
-            <h3>Analyzing left branch</h3>
-                <p>
+                
                     By following the left branch, we encounter the function <span id="inline-code">sub_401210</span> (renamed load_API) that load <span id="inline-code">IsDebuggerPresent</span> and then 
                     it calls that function with <span id="inline-code">call eax</span>. We can see this in the previous figure.
                     <br><br>
@@ -336,8 +334,24 @@
                     created inside the process, which runs the function <span id="inline-code">sub_401DC0</span> within the remote process.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_51.png" alt="customSample_Challenge_51" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h3>Extracting the payload inside svchost.exe</h3>
+                <p>
+                    By placing a breakpoint on <span id="inline-code">WriteProcessMemory</span>, we can observe that the second parameter on the stack passed to the function corresponds to the base address of 
+                    the payload that is written into the memory allocated in the remote process <span id="inline-code">svchost.exe</span>. By inspecting the hex dump, we can see that this payload is 
+                    actually another executable file.
 
-                    By analyzing <span id="inline-code">sub_401DC0</span>, we can observe that several hashed strings are decrypted again, and as shown in the command prompt on the right, we can obtain the 
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_51_1.png" alt="customSample_Challenge_51_1" onclick="window.open(this.src, '_blank');">
+
+                    By using Process Informer, we can observe that after the execution of <span id="inline-code">WriteProcessMemory</span>, the executable is loaded at the address 
+                    <span id="inline-code">0x2C00000</span>, as shown in the image on the right. On the left side, we can also see that one of the handles of the main sample corresponds to 
+                    <span id="inline-code">svchost.exe</span>, with the value <span id="inline-code">0x118</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_51_2.png" alt="customSample_Challenge_51_2" onclick="window.open(this.src, '_blank');">
+
+                    However, by analyzing this executable, it does not appear to perform any particular operation or exhibit behavior that is clearly malicious.
+                    <br><br>
+                    Next, by analyzing <span id="inline-code">sub_401DC0</span>, we can observe that several hashed strings are decrypted again, and as shown in the command prompt on the right, we can obtain the 
                     corresponding plaintext strings. Notice that the second and third values are incorrect. The correct values correspond to <span id="inline-code">InternetOpenUrlA</span> and 
                     <span id="inline-code">InternetReadFile</span>.
                     <br><br>
