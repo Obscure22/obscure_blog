@@ -286,7 +286,49 @@
             <h3>Analyzing left branch</h3>
                 <p>
                     By following the left branch, we encounter the function <span id="inline-code">sub_401210</span> (renamed load_API) that load <span id="inline-code">IsDebuggerPresent</span> and then 
-                    it calls that function with <span id="inline-code">call eax</span>.
+                    it calls that function with <span id="inline-code">call eax</span>. We can see this in the previous figure.
+                    <br><br>
+                    After that, we encounter the function <span id="inline-code">sub_401D50</span>. As shown in the image below, this function takes several hash values and passes them to 
+                    <span id="inline-code">sub_401210</span>, which, as we saw previously, is responsible for decrypting the hash and loading the corresponding function using <span id="inline-code">GetModuleHandle</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_44.png" alt="customSample_Challenge_44" onclick="window.open(this.src, '_blank');"> 
+
+                    By using the previously mentioned tool, it is possible to decrypt all the hash values and recover the corresponding API names.  
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_45.png" alt="customSample_Challenge_45" onclick="window.open(this.src, '_blank');">
+
+                    We can now rename all the dword variables in <span id="inline-code">sub_401D50</span> using the names of the decrypted functions, in order to make the code easier to understand during the analysis.
+                    <br><br>
+                    Continuing the analysis, we encounter the function <span id="inline-code">sub_401CA0</span>. As shown in the figure below, this function retrieves two values located in the 
+                    <span id="inline-code">.rdata</span> section at the addresses <span id="inline-code">0x413C5C</span> and <span id="inline-code">0x413C6C</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_46.png" alt="customSample_Challenge_46" onclick="window.open(this.src, '_blank');"> 
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_47.png" alt="customSample_Challenge_47" onclick="window.open(this.src, '_blank');">
+
+                    It can be observed, in the figure below, that these values are stored in <span id="inline-code">ebp-30h</span> and <span id="inline-code">ebp-20h</span>. After that, the 
+                    <span id="inline-code">ecx</span> register is set to zero (using xor operation). Immediately below, there is a loop that iterates through the entire character array, using 
+                    <span id="inline-code">ecx</span> as the index to move forward. During each iteration, two operations are performed on the characters: first a ROL (rotate left) by 4 bits, and then an 
+                    XOR with the key <span id="inline-code">0xA2</span>.
+                    <br><br>
+                    By using CyberChef and inserting the concatenated string stored in the <span id="inline-code">.rdata</span> section (remember that the string must be inserted in little endian, since this is 
+                    how it is stored in memory), and then applying the reverse operations, we can recover the original string: <span id="inline-code">C:\Windows\System32\svchost.exe</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_48.png" alt="customSample_Challenge_48" onclick="window.open(this.src, '_blank');">
+
+                    Indeed, immediately below we can see a call to <span id="inline-code">dword_416AA4</span>, and it is possible to notice a structure identical to the call used for 
+                    <span id="inline-code">CreateProcessA</span>. In fact, the parameters passed include the decrypted string obtained earlier and the value <span id="inline-code">0x4</span>, which corresponds to 
+                    the <span id="inline-code">CREATE_SUSPENDED</span> flag. However, by using the renaming function, we can see that this dword corresponds exactly to <span id="inline-code">CreateProcessA</span>. 
+                    This indicates that the malware is creating the process <span id="inline-code">C:\Windows\System32\svchost.exe</span> in a suspended state.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_49.png" alt="customSample_Challenge_49" onclick="window.open(this.src, '_blank');">
+
+                    Now, returning to the calling function, we can notice that the code becomes much easier to understand. First, there is a call to <span id="inline-code">VirtualAlloc</span>, where memory is 
+                    allocated in the current process starting from the address pointed to by <span id="inline-code">ebp+50h</span>, reserving <span id="inline-code">0x1000</span> bytes of space. After that, there 
+                    is a call to <span id="inline-code">VirtualAllocEx</span>, where the sample allocates memory inside <span id="inline-code">svchost.exe</span> with the protection flag 
+                    <span id="inline-code">0x40</span>, which corresponds to <span id="inline-code">PAGE_EXECUTE_READWRITE</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_50.png" alt="customSample_Challenge_50" onclick="window.open(this.src, '_blank');">  
                 </p>
             <h3>Analyzing right branch</h3>
                 <p>
