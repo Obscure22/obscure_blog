@@ -341,25 +341,38 @@
                     corresponding plaintext strings. Notice that the second and third values are incorrect. The correct values correspond to <span id="inline-code">InternetOpenUrlA</span> and 
                     <span id="inline-code">InternetReadFile</span>.
                     <br><br>
-                    After that, the same operation previously observed in <span id="inline-code">sub_401CA0</span> is performed. Two encrypted strings are taken from the 
-                    <span id="inline-code">.rdata</span> section at the addresses <span id="inline-code">0x413C7C</span> and <span id="inline-code">0x413C8C</span>. These values are stored respectively in 
-                    <span id="inline-code">ebp-40h</span> and <span id="inline-code">ebp-30h</span>. Next, a loop iterates over the entire concatenated string, and two operations are applied to each byte: 
-                    first a ROL (rotate left) by 4 bits, and then an XOR with the key <span id="inline-code">0xC5</span>. 
+                    After that, the same operation previously observed in <span id="inline-code">sub_401CA0</span> is performed. Three encrypted strings are taken from the 
+                    <span id="inline-code">.rdata</span> section at the addresses <span id="inline-code">0x413C7C</span>, <span id="inline-code">0x413C8C</span> and <span id="inline-code">0x413C9C</span>. 
+                    These values are stored respectively in <span id="inline-code">ebp-40h</span>, <span id="inline-code">ebp-30h</span> and <span id="inline-code">ebp-20h</span>. Next, a loop iterates over 
+                    the entire concatenated string, and two operations are applied to each byte: first a ROL (rotate left) by 4 bits, and then an XOR with the key <span id="inline-code">0xC5</span>. 
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_52.png" alt="customSample_Challenge_52" onclick="window.open(this.src, '_blank');">
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_53.png" alt="customSample_Challenge_53" onclick="window.open(this.src, '_blank');">
 
-                    By applying the same procedure in CyberChef, we can recover the decrypted string. The result is the following URL: <span id="inline-code">https://pastebin.com/raw/mLem9DG</span>.
+                    By applying the same procedure in CyberChef, we can recover the decrypted string. The result is the following URL: <span id="inline-code">https://pastebin.com/raw/mLem9DGk</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_54.png" alt="customSample_Challenge_54" onclick="window.open(this.src, '_blank');">
 
+                    By visiting the decrypted URL, we can observe that it contains another URL, which is used to download a <span id="inline-code">.png</span> file.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_54_1.png" alt="customSample_Challenge_54_1" onclick="window.open(this.src, '_blank');">
+
+                    Analyzing the image using HxD tool, we can notice the string <span id="inline-code">redaolurc</span> which is <span id="inline-code">cruloader</span> backwords followed by possible encrypted bytes.
+                    
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_54_2.png" alt="customSample_Challenge_54_2" onclick="window.open(this.src, '_blank');">
+                    
                     After that, we encounter the function <span id="inline-code">sub_401290</span>, which takes the previously decrypted URL as input. Inside this function, we can observe a call to 
                     <span id="inline-code">VirtualAlloc</span> with a protection value of <span id="inline-code">0x4</span>. Next, there is a call to <span id="inline-code">InternetOpenA</span>, where the 
                     User-Agent string used by the function is "cruloader". After that, <span id="inline-code">InternetOpenUrlA</span> is called, which receives the previously decrypted URL as input. 
                     Then we encounter the value <span id="inline-code">0x2B53DA6</span>, which is another hash value corresponding to the function <span id="inline-code">HttpQueryInfoA</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_55.png" alt="customSample_Challenge_55" onclick="window.open(this.src, '_blank');">
+
+                    After that, there is a call to <span id="inline-code">VirtualAlloc</span> followed by a call to <span id="inline-code">InternetReadFile</span>. This piece of code simply connects to the 
+                    decrypted URL, downloads the <span id="inline-code">.png</span> file, and stores the downloaded bytes in the previously allocated memory region.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_56.png" alt="customSample_Challenge_56" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3>Analyzing right branch</h3>
                 <p>
