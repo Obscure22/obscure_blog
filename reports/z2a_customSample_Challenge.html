@@ -329,6 +329,13 @@
                     <span id="inline-code">0x40</span>, which corresponds to <span id="inline-code">PAGE_EXECUTE_READWRITE</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_50.png" alt="customSample_Challenge_50" onclick="window.open(this.src, '_blank');">  
+
+                    Next, the sample calls <span id="inline-code">WriteProcessMemory</span>, passing the handle of the victim process (<span id="inline-code">svchost.exe</span>), the base address of the payload to 
+                    be written, and the size of the payload, which is stored at <span id="inline-code">eax+50h</span>. Finally, the sample calls <span id="inline-code">CreateRemoteThread</span>, passing 
+                    <span id="inline-code">sub_401DC0</span> as the start routine address. This means that the injected payload inside <span id="inline-code">svchost.exe</span> will begin execution from a new thread 
+                    created inside the process, which runs the function <span id="inline-code">sub_401DC0</span> within the remote process.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_51.png" alt="customSample_Challenge_51" onclick="window.open(this.src, '_blank');">
                 </p>
             <h3>Analyzing right branch</h3>
                 <p>
