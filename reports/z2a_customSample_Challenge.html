@@ -184,7 +184,7 @@
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_22.png" alt="customSample_Challenge_22" onclick="window.open(this.src, '_blank');">
                 </p>
-            <h2>Dynamic Analysis</h2>
+            <h2>Dynamic Analysis - Unpacking</h2>
                 <p>
                     By moving to <strong>xdbg</strong>, it is possible to set several breakpoints on the Windows APIs that were previously identified during the static analysis with IDA, such as 
                     <span id="inline-code">VirtualAlloc</span>, <span id="inline-code">VirtualAllocEx</span>, <span id="inline-code">WriteProcessMemory</span>, and <span id="inline-code">CreateProcessA</span>.
@@ -277,8 +277,10 @@
                     encrypted string corresponds to <span id="inline-code">IsDebuggerPresent</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_42.png" alt="customSample_Challenge_42" onclick="window.open(this.src, '_blank');">
-
-                    Another interesting part is the following. The sample compares <span id="inline-code">eax</span> with the value <span id="inline-code">0xB925C42D</span>, which corresponds to 
+                </p>
+            <h3>Anti Debugging</h3>
+                <p>
+                    The sample compares <span id="inline-code">eax</span> with the value <span id="inline-code">0xB925C42D</span>, which corresponds to 
                     <span id="inline-code">svchost.exe</span>. If the two values are not equal, the code takes the left branch; otherwise, it takes the right branch.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_43.png" alt="customSample_Challenge_43" onclick="window.open(this.src, '_blank');">    
