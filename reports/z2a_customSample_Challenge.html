@@ -389,6 +389,19 @@
                     decrypted URL, downloads the <span id="inline-code">.png</span> file, and stores the downloaded bytes in the previously allocated memory region.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_56.png" alt="customSample_Challenge_56" onclick="window.open(this.src, '_blank');">
+
+                    The function <span id="inline-code">sub_4013A0</span> is shown below. We can observe that it performs another call to <span id="inline-code">sub_401290</span>, where a connection to the 
+                    previously decrypted URL is established. The <span id="inline-code">.png</span> image is then downloaded again and stored in the allocated memory. Then three encrypted strings are taken from 
+                    the <span id="inline-code">.rdata</span> section at the addresses <span id="inline-code">0x413CA4</span> and <span id="inline-code">0x413CAC</span>. Next, a loop iterates over the entire 
+                    concatenated string, and two operations are applied to each byte: first a ROL (rotate left) by 4 bits, and then an XOR with the key <span id="inline-code">0x1F</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_57.png" alt="customSample_Challenge_57" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_58.png" alt="customSample_Challenge_58" onclick="window.open(this.src, '_blank');">
+
+                    By applying the same procedure in CyberChef, we can recover the decrypted string. The result is <span id="inline-code">\output.jpg</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_59.png" alt="customSample_Challenge_59" onclick="window.open(this.src, '_blank');">
                 </p>
             
         </section>
