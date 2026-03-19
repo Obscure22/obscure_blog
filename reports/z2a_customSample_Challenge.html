@@ -402,6 +402,29 @@
                     By applying the same procedure in CyberChef, we can recover the decrypted string. The result is <span id="inline-code">\output.jpg</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_59.png" alt="customSample_Challenge_59" onclick="window.open(this.src, '_blank');">
+
+                    After that, we encounter additional hashed functions, which correspond to the following Windows APIs: <span id="inline-code">GetTempPathW</span>, <span id="inline-code">CreateDirectoryW</span>, 
+                    <span id="inline-code">CreateFileW</span>, and <span id="inline-code">WriteFile</span>. After that, we can rename the variables in the pseudocode using the decrypted function names. 
+                    This significantly improves readability of the code.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_60.png" alt="customSample_Challenge_60" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_61.png" alt="customSample_Challenge_61" onclick="window.open(this.src, '_blank');">
+
+                    The sample then retrieves the path of the temporary directory, creates a new directory, and saves the downloaded content (the <span id="inline-code">.png</span> file) into this file. 
+                    The resulting path is: <span id="inline-code">\cruloader\output.jpg</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_62.png" alt="customSample_Challenge_62" onclick="window.open(this.src, '_blank');">
+
+                    After that, we encounter another decryption loop, where two strings located at the addresses <span id="inline-code">0x413CCC</span> and <span id="inline-code">0x413CCA</span> are decrypted.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_63.png" alt="customSample_Challenge_63" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_64.png" alt="customSample_Challenge_64" onclick="window.open(this.src, '_blank');">
+
+                    The decrypted string is <span id="inline-code">cruloader</span> written backwards, which is <span id="inline-code">redaolurc</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_65.png" alt="customSample_Challenge_65" onclick="window.open(this.src, '_blank');">
                 </p>
             
         </section>
