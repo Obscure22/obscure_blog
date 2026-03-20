@@ -426,6 +426,61 @@
                     The decrypted string is <span id="inline-code">cruloader</span> written backwards, which is <span id="inline-code">redaolurc</span>.
 
                     <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_65.png" alt="customSample_Challenge_65" onclick="window.open(this.src, '_blank');">
+
+                    After that, there is a section related to the decryption/deobfuscation of the bytes contained in the downloaded image. This block of code is significantly more complex than the previous ones. 
+                    By placing a breakpoint at the end of this routine, we can observe that <span id="inline-code">ebx</span> contains another binary, which starts at the address <span id="inline-code">0x4F81110</span> 
+                    and extends up to the offset <span id="inline-code">0x24A8</span> (stored in <span id="inline-code">ecx</span>), reaching the final address <span id="inline-code">0x4F835B8</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_66.png" alt="customSample_Challenge_66" onclick="window.open(this.src, '_blank');">
+
+                </p>
+            <h3>sub_401750 - Process Hollowing</h3>
+                <p>
+                    The sample first calls the function <span id="inline-code">0x401CA0</span>, where it performs another XOR-based decryption on the strings stored at <span id="inline-code">0x413C5C</span> and 
+                    <span id="inline-code">0x413C6C</span>. After decrypting these values, the resulting string is passed as a parameter to <span id="inline-code">CreateProcessA</span>. In practice, the sample 
+                    creates another instance of <span id="inline-code">svchost.exe</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_67.png" alt="customSample_Challenge_67" onclick="window.open(this.src, '_blank');">
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_68.png" alt="customSample_Challenge_68" onclick="window.open(this.src, '_blank');">
+
+                    After that, the subroutine <span id="inline-code">0x401750</span> is called. At the beginning of this function, several Windows APIs are decrypted, including 
+                    <span id="inline-code">NtUnmapViewOfSection</span>. The presence of this API is particularly significant, as it is commonly used in process hollowing techniques to unmap the original 
+                    memory of a process before replacing it with a malicious payload. The routine is first the sample retrieves the context of the suspended thread using <span id="inline-code">GetThreadContext</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_69.png" alt="customSample_Challenge_69" onclick="window.open(this.src, '_blank');">
+
+                    Then it reads the memory image of the remote process.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_70.png" alt="customSample_Challenge_70" onclick="window.open(this.src, '_blank');">
+
+                    If necessary, the sample calls <span id="inline-code">NtUnmapViewOfSection</span> to unmap the original PE image from the memory of the suspended process.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_71.png" alt="customSample_Challenge_71" onclick="window.open(this.src, '_blank');">
+
+                    Allocates memory in the remote process with protection <span id="inline-code">0x40</span>, which corresponds to <span id="inline-code">PAGE_EXECUTE_READWRITE</span>.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_72.png" alt="customSample_Challenge_72" onclick="window.open(this.src, '_blank');">
+
+                    Applies relocations if the image is not loaded at its preferred base.
+                    <br>
+                    Sets the thread context so that execution will start from the new entry point.
+                    <br>
+                    Writes the data stored in <span id="inline-code">v23</span> into <span id="inline-code">pBaseAddress</span> in the remote process.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_73.png" alt="customSample_Challenge_73" onclick="window.open(this.src, '_blank');">
+
+                    Copies the PE structure (headers and sections) into the remote process.
+                    <br>
+                    Applies correct memory permissions.
+                    <br>
+                    Resumes the target thread.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_74.png" alt="customSample_Challenge_74" onclick="window.open(this.src, '_blank');">
+
+                    Finally, if we open the executable that we previously extracted, stored inside <span id="inline-code">svchost.exe</span> through process hollowing, we obtain the following code.
+
+                    <img class="post-image" src="../img/z2a_customSample_Challenge/z2a_customSample_Challenge_75.png" alt="customSample_Challenge_75" onclick="window.open(this.src, '_blank');">
                 </p>
             
         </section>
