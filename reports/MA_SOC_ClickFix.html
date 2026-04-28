@@ -54,8 +54,8 @@
 
                     By running the <span id="inline-code">strings.exe</span> utility, we identified a large volume of data within the file, including the LAME3.98 signature and other standard encoder strings. 
                     While these initial findings might seem like normal metadata, further inspection of the output revealed significant anomalies. Specifically, we observed unusually long strings.
-                    To eliminate background noise and focus on suspicious data, we refined the analysis by using the -n parameter with strings.exe. This allowed us to filter the output and display only strings exceeding 
-                    a specific length. 
+                    To eliminate background noise and focus on suspicious data, we refined the analysis by using the <span id="inline-code">-n</span> parameter with <span id="inline-code">strings.exe</span>. 
+                    This allowed us to filter the output and display only strings exceeding a specific length. 
                     <br>
                     <br>
                     By applying this filter, we immediately identified an unusual payload hidden within the binary data. The output revealed a complete HTML structure containing an embedded VBScript, an 
@@ -63,6 +63,24 @@
                     HTML Application (HTA).
 
                     <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_2.png" alt="MA_SOC_ClickFix_2" onclick="window.open(this.src, '_blank');">
+                </p>
+            <h2>Payload Decryption</h2>
+                <p>
+                    Upon inspecting the extracted code, we identified several large, encoded strings being passed as arguments to a specific function named <span id="inline-code">SetBond</span>. Based on the 
+                    script's execution flow, it is evident that <span id="inline-code">SetBond</span> serves as the primary decryption or deobfuscation routine.
+                    <br>
+                    <br>
+                    In the following picture, we can observe the internal logic of the <span id="inline-code">SetBond</span> function. The routine accepts a single string as input and begins by 
+                    initializing several local variables. It then executes a <span id="inline-code">For</span> loop that iterates through every character of the input string. Inside the loop, it appends 
+                    the <span id="inline-code">&H</span> prefix to each segment to identify it as a hex value. It then uses the <span id="inline-code">CInt</span> and <span id="inline-code">Chr</span> functions 
+                    to convert these hex codes back into readable characters.
+
+                    <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_3.png" alt="MA_SOC_ClickFix_3" onclick="window.open(this.src, '_blank');">
+
+                    We can translated the VBScript logic into a Python script. Since the original function uses a hexadecimal-to-character conversion with a specific step, the Python equivalent uses 
+                    string slicing and the <span id="inline-code">int()</span> function with base 16.
+
+                    <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_4.png" alt="MA_SOC_ClickFix_4" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
