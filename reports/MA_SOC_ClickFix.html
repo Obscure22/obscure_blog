@@ -81,6 +81,27 @@
                     string slicing and the <span id="inline-code">int()</span> function with base 16.
 
                     <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_4.png" alt="MA_SOC_ClickFix_4" onclick="window.open(this.src, '_blank');">
+
+                    During the analysis of the VBScript code, we identified a significant section characterized by an extensive series of concatenated strings, as shown in the figure below. These fragments are joined together in a long sequence. 
+                    Given the structure and the volume of these strings, we can deduce that this section represents the heart of the malicious code. These concatenated blocks are the inputs being passed to the decryption 
+                    function previously analyzed.
+
+                    <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_5.png" alt="MA_SOC_ClickFix_5" onclick="window.open(this.src, '_blank');">
+
+                    Having identified the structure of the code, the next logical step is to collect all the concatenated string fragments and merge them into a single data block. This data block is then insert as input 
+                    into our Python script to decrypt it. By performing this operation, we can successfully extract the plaintext string, finally revealing the actual command the attacker intends to execute on the 
+                    victim's system, as shown in the picture below.
+
+                    <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_6.png" alt="MA_SOC_ClickFix_6" onclick="window.open(this.src, '_blank');">
+
+                    The decrypted string reveals a highly obfuscated command designed to launch PowerShell while hiding from security monitors. Through the instruction set 
+                    <span id="inline-code">x=pow&&set y=ershell&&call</span>, the attacker splits the words <span id="inline-code">powershell<span id="inline-code"> and <span id="inline-code">setcall</span> into 
+                    two separate variables to prevent security systems from flagging the keyword in the command line. The command then calls the 32-bit PowerShell executable located in the 
+                    <span id="inline-code">SysWOW64</span> folder by joining the variables using the <span id="inline-code">!x!!y!</span> syntax. Finally, the <span id="inline-code">-E</span> flag indicates that 
+                    the following payload is a Base64 encoded string, which hides the actual malicious script.
+                    <br>
+                    <br>
+                    
                 </p>
         </section>
     </section>
