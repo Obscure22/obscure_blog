@@ -1,1 +1,68 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" sizes="32x32" href="../img/favicon.png">
+    <title>Obscure RE and MA Dojo</title>
+    
+    <!-- link to fontawesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <!-- link to css file -->
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+      <a href="/obscure_blog" class="logo">Obscure<span class="cursor">_</span></a>
+          <ul class="nav-links">
+              <li><a href="/obscure_blog">Dojo</a></li>
+              <li><a href="../offensive_lab/off_lab.html">Offensive Lab</a></li>
+              <li><a href="../ctf_reversing/re.html">CTF Reverse Engineering</a></li>
+          </ul>
+    </nav>
+    <section class="container">
+        <section class="container-title">
+            <h1>ClickFix Campaign - MSHTA-Based PowerShell Execution via Masqueraded MP3 Payload</h1>
+            <div class="post__bottom">
+                <div class="post__author">
+                    <a href="#" aria-label="ObscureRe">
+                        <img class="post__author-image" src="../img/logo.png"
+                            alt="Obscure's Picture">
+                    </a>
+                </div>
+                <span>
+                    Obscure_ &nbsp;·&nbsp; <span id="reading-time"></span>
+                </span>
+            </div>
+        </section>
+        <section>
+            <h2>Introduction</h2>
+            <p>
+                In this post, I will examine the sample provided in the <strong>Malops</strong> website. We will attempt to answer the questions from the challenge by analyzing the sample itself, 
+                performing a thorough malware analysis to better understand its behavior and characteristics.
+                <br>
+                The scenario is the following: Our Threat Hunting team has detected suspicious network traffic originating from the workstation of a senior research scientist at DefenseTech Industries, 
+                a contractor developing next-generation missile defense systems. The suspicious traffic appears to be communicating with command and control C2 servers previously associated with the advanced 
+                persistent threat group known as Lazarus. Initial investigation reveals that the researcher recently received what appeared to be a legitimate job application email with a PDF attachment. 
+                Upon opening the attachment, a sophisticated loader was executed, which decrypted and deployed a variant of the RokRat remote access trojan. Our Incident Response team has extracted the 
+                shellcode loader component from the infected system for analysis.
+            </p>
+        </section>
+        <section>
+            <h2>Analysis</h2>
+            <h3><strong>Q1)</strong> What is the MD5 hash of the binary?</h3>
+                <p>
+                    Opening the sample with <strong>CFF Explorer</strong>, we can observe that the executable is compiled for a 32-bit architecture. Additionally, the associated MD5 hash of the file can be 
+                    retrieved directly from the tool, which is the following: <span id="inline-code">CF28EF5CEDA2AA7D7C149864723E5890</span>.
 
+                    <img class="post-image" src="../img/malops_RokRat_Loader/malops_RokRat_Loader_1.png" alt="malops_RokRat_Loader_1" onclick="window.open(this.src, '_blank');">
+                </p>
+            
+        </section>
+    </section>
+
+    <script src="../js/reading-time.js"></script>
+</body>
+</html>
