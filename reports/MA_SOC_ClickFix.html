@@ -46,7 +46,8 @@
             </p>
         </section>
         <section>
-            <h2>Static Analysis and Payload Identification</h2>
+            <h2>First Stage</h2>
+            <h3>Static Analysis and Payload Identification</h3>
                 <p>
                     The first step in the analysis was to inspect the file using <strong>ExifTool</strong> to determine its actual file type. The file metadata indicates that it is a valid MP3 encoded with LAME3.98.
 
@@ -64,7 +65,7 @@
 
                     <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_2.png" alt="MA_SOC_ClickFix_2" onclick="window.open(this.src, '_blank');">
                 </p>
-            <h2>Payload Decryption</h2>
+            <h3>Payload Decryption</h3>
                 <p>
                     Upon inspecting the extracted code, we identified several large, encoded strings being passed as arguments to a specific function named <span id="inline-code">SetBond</span>. Based on the 
                     script's execution flow, it is evident that <span id="inline-code">SetBond</span> serves as the primary decryption or deobfuscation routine.
@@ -95,13 +96,22 @@
                     <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_6.png" alt="MA_SOC_ClickFix_6" onclick="window.open(this.src, '_blank');">
 
                     The decrypted string reveals a highly obfuscated command designed to launch PowerShell while hiding from security monitors. Through the instruction set 
-                    <span id="inline-code">x=pow&&set y=ershell&&call</span>, the attacker splits the words <span id="inline-code">powershell<span id="inline-code"> and <span id="inline-code">setcall</span> into 
+                    <span id="inline-code">x=pow&&set y=ershell&&call</span>, the attacker splits the words <span id="inline-code">powershell</span> and <span id="inline-code">setcall</span> into 
                     two separate variables to prevent security systems from flagging the keyword in the command line. The command then calls the 32-bit PowerShell executable located in the 
                     <span id="inline-code">SysWOW64</span> folder by joining the variables using the <span id="inline-code">!x!!y!</span> syntax. Finally, the <span id="inline-code">-E</span> flag indicates that 
                     the following payload is a Base64 encoded string, which hides the actual malicious script.
                     <br>
                     <br>
+                    The last remaining task is to decode the Base64 string following the <span id="inline-code">-E</span> flag. While this could be done directly in Python, I chose to use <strong>CyberChef</strong>. 
+                    The following image shows the result of the Base64 decoding.
                     
+                    <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_7.png" alt="MA_SOC_ClickFix_7" onclick="window.open(this.src, '_blank');">
+
+                    This script in the figure above, is a sophisticated multi-stage PowerShell dropper designed to bypass security controls and download the final payload. 
+                    It begins by fingerprinting the victim's system, generating a unique 16-character ID (<span id="inline-code">$nipple</span>) from the MD5 hash of the computer name and username to track the infection. 
+                    Finally, the script reaches out to a remote C2 server which is build in this way: <span id="inline-code">https://&#60;unique_id_of_the_victim&#62;.oakenfjrod.ru/...</span> to download a 
+                    second-stage payload, which is then immediately executed in memory using the <span id="inline-code">IEX</span> (Invoke-Expression) command. By embedding this unique ID directly into the C2 URL, 
+                    the attacker can track individual infections, filter out repeated requests from sandboxes or researchers, and serve specific payloads tailored to that specific victim.
                 </p>
         </section>
     </section>
