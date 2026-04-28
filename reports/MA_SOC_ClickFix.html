@@ -96,7 +96,7 @@
                     <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_6.png" alt="MA_SOC_ClickFix_6" onclick="window.open(this.src, '_blank');">
 
                     The decrypted string reveals a highly obfuscated command designed to launch PowerShell while hiding from security monitors. Through the instruction set 
-                    <span id="inline-code">x=pow&&set y=ershell&&call</span>, the attacker splits the words <span id="inline-code">powershell</span> and <span id="inline-code">setcall</span> into 
+                    <span id="inline-code">x=pow&&set y=ershell&&call</span>, the attacker splits the words <span id="inline-code">powershell</span> into 
                     two separate variables to prevent security systems from flagging the keyword in the command line. The command then calls the 32-bit PowerShell executable located in the 
                     <span id="inline-code">SysWOW64</span> folder by joining the variables using the <span id="inline-code">!x!!y!</span> syntax. Finally, the <span id="inline-code">-E</span> flag indicates that 
                     the following payload is a Base64 encoded string, which hides the actual malicious script.
