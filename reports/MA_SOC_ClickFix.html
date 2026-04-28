@@ -51,6 +51,18 @@
                     The first step in the analysis was to inspect the file using <strong>ExifTool</strong> to determine its actual file type. The file metadata indicates that it is a valid MP3 encoded with LAME3.98.
 
                     <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_1.png" alt="MA_SOC_ClickFix_1" onclick="window.open(this.src, '_blank');">
+
+                    By running the <span id="inline-code">strings.exe</span> utility, we identified a large volume of data within the file, including the LAME3.98 signature and other standard encoder strings. 
+                    While these initial findings might seem like normal metadata, further inspection of the output revealed significant anomalies. Specifically, we observed unusually long strings.
+                    To eliminate background noise and focus on suspicious data, we refined the analysis by using the -n parameter with strings.exe. This allowed us to filter the output and display only strings exceeding 
+                    a specific length. 
+                    <br>
+                    <br>
+                    By applying this filter, we immediately identified an unusual payload hidden within the binary data. The output revealed a complete HTML structure containing an embedded VBScript, an 
+                    extremely suspicious discovery for a file with an <span id="inline-code">.mp3</span> extension. This finding confirms that the file is not a legitimate audio object but a malicious 
+                    HTML Application (HTA).
+
+                    <img class="post-image" src="../img/MA_SOC_ClickFix/MA_SOC_ClickFix_2.png" alt="MA_SOC_ClickFix_2" onclick="window.open(this.src, '_blank');">
                 </p>
         </section>
     </section>
